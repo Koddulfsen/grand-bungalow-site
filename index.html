@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grand Bungalow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Playfair+Display:ital,wght@1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+  html,body{
+    margin:0; padding:0;
+    background:#000;
+  }
+  * { box-sizing: border-box; }
+
+  section{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ---------- hero ---------- */
+  #hero{
+    overflow:hidden;
+  }
+  /* background lives on a ::before so its opacity can be dimmed
+     independently of the logo/butterfly content sitting on top */
+  #hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: url('temp-bg.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.75;
+  }
+
+  /* stacks the logo (with its butterfly) above the book-now button,
+     centered as a column within the hero */
+  .hero-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* logo + butterfly share this box so the butterfly's landing spot is
+     always relative to the LOGO's own corner, not the full hero section —
+     one left/top % now works at every breakpoint instead of three guesses */
+  .logo-wrap{
+    position:relative;
+    display:inline-block;
+  }
+
+  .logo{
+    width: min(70vw, 700px);
+    height:auto;
+    display:block;
+    filter:
+      drop-shadow(0 0 90px rgba(0,0,0,0.55))
+      drop-shadow(0 0 140px rgba(0,0,0,0.45))
+      drop-shadow(0 0 200px rgba(0,0,0,0.4))
+      drop-shadow(0 50px 80px rgba(0,0,0,0.5));
+  }
+
+  .butterfly-wrap{
+    position:absolute;
+    width: 190px; height: 217px;
+    margin-left: -95px; margin-top: -108px; /* half width/height: centers box on the left/top point */
+    left: 95%; top: 6%; /* top-right of the "D" in GRAND */
+    opacity:0;
+  }
+  .butterfly{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    transform: scaleX(-1);
+  }
+  .butterfly img{
+    position:absolute; inset:0;
+    width: 100%;
+    height:auto;
+    opacity:0;
+    filter:
+      url(#stickerOutline)
+      saturate(0.92) contrast(1.05)
+      drop-shadow(0 6px 5px rgba(0,0,0,0.5));
+  }
+  .butterfly img.frame-active{ opacity:1; }
+
+  /* ---------- book now button ---------- */
+  .book-now{
+    margin-top: 36px;
+    display:block;
+    border: none;
+    padding: 21px 40px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color:#fff8ef;
+    text-decoration: none;
+    background:#c4602f;
+    clip-path: polygon(2% 8%, 20% 0%, 45% 4%, 70% 0%, 98% 6%, 100% 55%, 96% 100%, 60% 96%, 30% 100%, 4% 92%);
+    box-shadow: 0 10px 16px rgba(0,0,0,0.5);
+    cursor:pointer;
+  }
+
+  /* ---------- transition breather sections: short, quiet, a beat
+     between the bigger photo sections rather than a full-height block ---------- */
+  .transition{
+    min-height: 55vh;
+    padding: 50px 20px;
+    flex-direction: column;
+    gap: 28px;
+  }
+  #transition-2{
+    align-items: flex-start;
+  }
+  .beach-text{
+    display:flex;
+    flex-direction:column;
+    gap: 2px;
+    text-align: left;
+  }
+  .beach-line{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 600;
+    text-transform: lowercase;
+    color: #e8dcc0;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin-left: 20px;
+  }
+  .beach-line-emphasis{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #e8dcc0;
+    font-size: 1.9rem;
+    line-height: 1.3;
+  }
+
+  /* slide-in-from-right on scroll — same start time and same duration
+     for both, so they arrive together. Distances differ (text starts
+     fully off-screen, image starts closer to its resting spot since
+     it's already near the right edge) which just means the text moves
+     faster to cover more ground in the same time — that's expected,
+     not a mismatch. */
+  #transition-2 .beach-diagonal-wrap{
+    transform: translateX(700px); /* already near the right edge — just needs to clear it */
+    transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  #transition-2 .beach-text{
+    transform: translateX(1400px); /* fully off past the right edge of any breakpoint width */
+    transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  #transition-2.in-view .beach-diagonal-wrap{
+    transform: translateX(0);
+  }
+  #transition-2.in-view .beach-text{
+    transform: translateX(0);
+  }
+
+  #transition-1{
+    background:#111;
+    overflow:hidden;
+  }
+  /* pop-up-from-below with overshoot: starts pushed down, then springs
+     past its resting spot slightly before settling — like it popped up */
+  .plant-cutout-left{
+    position:absolute;
+    left: 0; bottom: 0;
+    width: 170px;
+    height:auto;
+    transform: scaleX(-1) translateY(140px); /* mirrored + pushed down, pre-reveal */
+    transition: transform 0.85s cubic-bezier(.34, 1.56, .64, 1);
+    filter:
+      url(#stickerOutline)
+      saturate(1.1) contrast(1.1)
+      drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+  }
+  #transition-1.in-view .plant-cutout-left{
+    transform: scaleX(-1) translateY(0);
+  }
+  /* same pop-up-with-overshoot as the plant, starting a touch later */
+  .hibiscus-cutout-right{
+    position:absolute;
+    right: 0; bottom: 0;
+    width: 210px;
+    height:auto;
+    transform: scaleX(-1) translateY(140px); /* mirrored + pushed down, pre-reveal */
+    transition: transform 0.85s cubic-bezier(.34, 1.56, .64, 1);
+    transition-delay: 0.1s;
+    filter:
+      url(#stickerOutline)
+      saturate(1.1) contrast(1.1)
+      drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+  }
+  #transition-1.in-view .hibiscus-cutout-right{
+    transform: scaleX(-1) translateY(0);
+  }
+  .nature-text{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 2px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #transition-1.in-view .nature-text{
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s; /* follows the plant's pop-up a beat behind */
+  }
+  .nature-line{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color:#e8dcc0;
+    font-size: 1.3rem;
+  }
+  .nature-cursive{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: lowercase;
+    color:#e8dcc0;
+    font-size: 3.3rem;
+    line-height: 1;
+  }
+
+  /* ---------- second transition: magic beach photo, diagonal-cut,
+     bottom-right, sized as a fraction of the page width (golden ratio) ---------- */
+  #transition-2{ background:#161b14; overflow:hidden; }
+  /* the filter goes on this outer wrapper — filter runs BEFORE clip-path
+     per spec, so putting the sticker outline here means it sees the
+     already-clipped jagged shape's real alpha edge from the child img */
+  .beach-diagonal-wrap{
+    position:absolute;
+    right: 0; top: 0;
+    width: 61.8vw;
+    height: 100%;
+    filter:
+      url(#stickerOutlineBig)
+      drop-shadow(-10px 0 20px rgba(0,0,0,0.5));
+  }
+  .beach-diagonal{
+    display:block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* diagonal cut from the top-center down to the bottom-left corner —
+       mostly straight, with just a few gentle waves so it reads as a
+       hand-cut edge rather than a perfectly ruler-straight line */
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 0% 100%,
+      9.5% 85%, 13% 70%, 24.5% 55%, 28% 40%, 39.5% 25%, 43% 10%,
+      50% 0%
+    );
+  }
+
+  /* mobile: logo takes more width, butterfly lands a bit further in/up
+     since the wordmark wraps tighter on a narrow screen */
+  @media (max-width: 600px){
+    #hero{ padding-left: 28px; padding-right: 28px; }
+    .logo{ width: min(78vw, 520px); }
+    .butterfly-wrap{
+      width: 100px; height: 114px;
+      margin-left: -50px; margin-top: -35px;
+    }
+    #transition-1{ min-height: 40vh; padding-right: 8px; align-items: flex-end; justify-content: center; }
+    .plant-cutout-left{ width: 210px; bottom: -30px; left: -55px; } /* looks like it's growing up out of the section's bottom edge */
+    .hibiscus-cutout-right{ display: none; }
+    .nature-text{ margin-top: 50px; margin-right: 20px; align-items:flex-end; }
+    .nature-line, .nature-cursive{ text-align:center; }
+    .nature-line{ font-size: 1rem; }
+    .nature-cursive{ font-size: 2rem; }
+    .beach-diagonal-wrap{
+      right: -40px; /* shifted right so it doesn't overlap the text */
+      filter:
+        url(#stickerOutlineSmall)
+        drop-shadow(-10px 0 20px rgba(0,0,0,0.5));
+    }
+    .beach-line{ font-size: 1.15rem; }
+    .beach-line-emphasis{ font-size: 1.4rem; }
+  }
+
+  /* tablet: sits between mobile and desktop proportions */
+  @media (min-width: 601px) and (max-width: 1024px){
+    .logo{ width: min(60vw, 620px); }
+    .butterfly-wrap{
+      width: 120px; height: 138px;
+      margin-left: -60px; margin-top: -55px;
+    }
+    .book-now{
+      padding: 28px 54px;
+      font-size: 1.7rem;
+    }
+    .transition{ min-height: 70vh; }
+    .plant-cutout-left{ width: 280px; }
+    .hibiscus-cutout-right{ width: 340px; }
+    .beach-diagonal-wrap{
+      filter:
+        url(#stickerOutlineMed)
+        drop-shadow(-10px 0 20px rgba(0,0,0,0.5));
+    }
+  }
+
+  /* desktop: shift the crop up so more of the bottom of the photo shows */
+  @media (min-width: 1025px){
+    #hero::before{ background-position: center 75%; }
+    .book-now{
+      padding: 36px 72px;
+      font-size: 2.3rem;
+    }
+    .transition{ min-height: 85vh; }
+    .plant-cutout-left{ width: 380px; }
+    .hibiscus-cutout-right{ width: 460px; }
+    .beach-text{ margin-left: 20px; }
+    #hammock-section{ min-height: 100vh; }
+  }
+
+  /* ---------- hammock photo section: full-bleed image, breather-height ---------- */
+  #hammock-section{
+    min-height: 60vh;
+    background-image: url('Ruan-images/hammock-patio.jpeg');
+    background-size: cover;
+    background-position: center;
+    align-items: flex-end; /* caption sits toward the bottom of the section */
+  }
+  /* ::before so it paints under the real caption content, not over it */
+  #hammock-section::before{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 45%);
+  }
+  .hammock-caption{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    color:#fff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 400;
+    text-align:center;
+    padding-bottom: 40px;
+  }
+  .hammock-line1{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    font-size: 2.8rem;
+    letter-spacing: 0.5px;
+  }
+  .brand-new-img{
+    height: 0.85em;
+    width:auto;
+    display:block;
+  }
+  .hammock-line2{
+    font-size: 2.8rem;
+    letter-spacing: 0.5px;
+    text-transform: none;
+  }
+
+  /* ---------- gallery: garden shot tall on the left, the other two
+     stacked on the right — same arrangement at every breakpoint ---------- */
+  #gallery-section{
+    min-height: auto;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+    height: 70vh;
+  }
+  #gallery-section img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #gallery-section img:nth-child(1){ grid-column: 1; grid-row: 1 / 3; } /* garden — tall, left */
+  #gallery-section img:nth-child(2){ grid-column: 2; grid-row: 1; }     /* bathroom — top right */
+  #gallery-section img:nth-child(3){ grid-column: 2; grid-row: 2; }     /* room A3 — bottom right */
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="stickerOutline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="8" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- larger radius for big elements (like the beach photo) where an
+         8px ring would be imperceptible relative to the element's size.
+         Big/Med/Small let the border scale down on smaller breakpoints. -->
+    <filter id="stickerOutlineBig" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="20" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="stickerOutlineMed" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="14" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="stickerOutlineSmall" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </svg>
+
+  <section id="hero">
+    <div class="hero-content">
+      <div class="logo-wrap">
+        <img class="logo" src="butterfly-imgs/logo-temp.2-NOBG.png" alt="Grand Bungalow logo">
+
+        <div class="butterfly-wrap" id="butterflyWrap">
+          <div class="butterfly">
+            <img src="butterfly-imgs/1-removebg-preview.png" alt="butterfly frame 1" class="frame-active">
+            <img src="butterfly-imgs/2-removebg-preview.png" alt="butterfly frame 2">
+            <img src="butterfly-imgs/3-removebg-preview.png" alt="butterfly frame 3">
+            <img src="butterfly-imgs/4-removebg-preview.png" alt="butterfly frame 4">
+          </div>
+        </div>
+      </div>
+
+      <a class="book-now" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">Book Now</a>
+    </div>
+  </section>
+
+  <section id="transition-1" class="transition">
+    <img class="plant-cutout-left" src="flowers/green-plant1-removebg-preview.png" alt="plant">
+
+    <div class="nature-text">
+      <span class="nature-line">experience</span>
+      <span class="nature-cursive">abundance</span>
+    </div>
+
+    <img class="hibiscus-cutout-right" src="flowers/red-hibiscus-removebg-preview.png" alt="red hibiscus">
+  </section>
+
+  <section id="hammock-section">
+    <div class="hammock-caption">
+      <div class="hammock-line1">
+        8 <img class="brand-new-img" src="flowers/brand-new-removebg-preview.png" alt="brand new">
+      </div>
+      <div class="hammock-line2">BUNGALOWS</div>
+    </div>
+  </section>
+
+  <section id="transition-2" class="transition">
+    <div class="beach-text">
+      <span class="beach-line">2 minutes from</span>
+      <span class="beach-line-emphasis">magic beach</span>
+    </div>
+    <div class="beach-diagonal-wrap">
+      <img class="beach-diagonal" src="flowers/magic-beach.png" alt="magic beach">
+    </div>
+  </section>
+
+  <section id="gallery-section">
+    <img src="Ruan-images/flowers-garden-family-friendly.jpeg" alt="Family-friendly garden">
+    <img src="Ruan-images/bathroom-warm-shower.jpeg" alt="Warm shower bathroom">
+    <img src="Ruan-images/rooma3-made-bed-garden-view.jpeg" alt="Room A3 made bed with garden view">
+  </section>
+
+  <script>
+    const wrap = document.getElementById('butterflyWrap');
+    const frames = document.querySelectorAll('.butterfly img');
+
+    function setFrame(i){
+      frames.forEach(f => f.classList.remove('frame-active'));
+      frames[i].classList.add('frame-active');
+    }
+
+    wrap.style.transition = 'none';
+
+    function delay(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    // mobile keeps the original (slower) flap timing; tablet/desktop use the
+    // faster, doubled-speed timing
+    function isMobile(){ return window.innerWidth <= 600; }
+    function hopDelay(){ return isMobile() ? 280 : 140; }
+
+    // hop-in from the top-right, built fresh each cycle from the butterfly's
+    // actual on-screen resting position — this guarantees it always starts
+    // beyond the real edge of the viewport, at any breakpoint, instead of a
+    // fixed pixel offset that stops clearing the screen on wider layouts.
+    // More distance to cover naturally means more decelerating hops, so
+    // wider screens get a longer entrance sequence rather than a short one.
+    // settleX/settleY: the old hand-tuned path didn't land at exactly (0,0)
+    // relative to the CSS anchor — it landed at this net offset, and every
+    // breakpoint's position was eyeballed against that. Keep targeting it
+    // so the landing spot stays put while the spawn point becomes dynamic.
+    function buildEntrancePath(spawnX, spawnY, avgHop, settleX = -8, settleY = -66){
+      const decelSteps = Math.max(6, Math.round(spawnX / avgHop));
+      const frameCycle = [1, 2, 3, 2, 1, 0];
+      const path = [[0, spawnX, -spawnY, -22]]; // initial swoop in from off-screen
+      let remX = spawnX - settleX, remY = -spawnY - settleY;
+      for (let i = 0; i < decelSteps; i++){
+        const remainingSteps = decelSteps - i;
+        const isLast = i === decelSteps - 1;
+        const stepX = isLast ? -remX : -remX * (1.5 / remainingSteps);
+        const stepY = isLast ? -remY : -remY * (1.5 / remainingSteps);
+        remX += stepX; remY += stepY;
+        const t = i / (decelSteps - 1);
+        const rot = -18 + t * 18; // banks back level as it settles onto the landing spot
+        path.push([frameCycle[i % frameCycle.length], stepX, stepY, rot]);
+      }
+      return path;
+    }
+
+    // hop away to the left with a takeoff curve: rises for the first half
+    // (like gaining lift off the perch), then levels out and drifts
+    // slightly down as it settles into a cruising flight off-screen.
+    // Constant hop size/timing throughout — no acceleration ramp.
+    function buildExitPath(totalDistance, avgDx){
+      const frameCycle = [1, 2, 3, 2];
+      const path = [];
+      let travelled = 0;
+      let i = 0;
+      while (travelled < totalDistance){
+        const progress = travelled / totalDistance;
+        const dx = -(avgDx - 8 + Math.random() * 16);
+        let dy = progress < 0.5
+          ? -(18 - progress * 2 * 14)        // rising: -18 tapering to ~-4 by mid
+          : (progress - 0.5) * 2 * 10 - 2;   // leveling out, gentle descent after the arc peak
+        dy += Math.random() * 6 - 3;
+        const rot = -10 - progress * 8 + (Math.random() * 4 - 2); // banks further as it flies off
+        path.push([frameCycle[i % frameCycle.length], dx, dy, rot, hopDelay()]);
+        travelled += -dx;
+        i++;
+      }
+      return path;
+    }
+    const flightPathOut = buildExitPath(1600, 48); // ~2x the entrance's hop distance
+
+    let x = 0, y = 0;
+
+    function applyStep(step){
+      const [frame, dx, dy, rot] = step;
+      x += dx; y += dy;
+      setFrame(frame);
+      wrap.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+    }
+
+    async function flySequence(path, revealAfterFirstStep){
+      for (let i = 0; i < path.length; i++){
+        const step = path[i];
+        applyStep(step);
+        if (i === 0 && revealAfterFirstStep) wrap.style.opacity = '1';
+        await delay(step.length > 4 ? step[4] : hopDelay());
+      }
+    }
+
+    // rest at the landing spot for roughly `ms`, with an occasional slow
+    // flap (frame 1 -> 0) so it doesn't look frozen, then returns
+    async function idleRest(ms){
+      const end = performance.now() + ms;
+      while (performance.now() < end){
+        setFrame(0);
+        const restTime = Math.min(900 + Math.random() * 1200, end - performance.now());
+        if (restTime <= 0) break;
+        await delay(restTime);
+        if (performance.now() >= end) break;
+        setFrame(1);
+        await delay(180);
+      }
+      setFrame(0);
+    }
+
+    async function mainLoop(){
+      while (true){
+        // reset to the resting position before flying in
+        x = 0; y = 0;
+        wrap.style.opacity = '0';
+        wrap.style.transform = 'translate(0px, 0px) rotate(0deg)';
+
+        // measure real distance to the viewport edges from the resting spot,
+        // so the spawn point is always genuinely off-screen at this breakpoint
+        const rect = wrap.getBoundingClientRect();
+        const spawnX = (window.innerWidth - rect.left) + 140;
+        const spawnY = rect.top + 140;
+        const flightPathIn = buildEntrancePath(spawnX, spawnY, 26);
+
+        await flySequence(flightPathIn, true);
+
+        await idleRest(8000);
+
+        await flySequence(flightPathOut);
+        wrap.style.opacity = '0'; // fully gone once off-screen
+
+        await delay(12000);
+      }
+    }
+
+    setTimeout(mainLoop, 300);
+
+    // reveal transition-2's text + beach image with a slide-in-from-right
+    // once the section scrolls into view, instead of always being visible
+    const transition2 = document.getElementById('transition-2');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          transition2.classList.add('in-view');
+          revealObserver.unobserve(transition2);
+        }
+      });
+    }, { threshold: 0.35 });
+    revealObserver.observe(transition2);
+
+    // same idea for transition-1: plant pops up from below with overshoot,
+    // text fades in from below a beat behind
+    const transition1 = document.getElementById('transition-1');
+    const revealObserver1 = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          transition1.classList.add('in-view');
+          revealObserver1.unobserve(transition1);
+        }
+      });
+    }, { threshold: 0.35 });
+    revealObserver1.observe(transition1);
+  </script>
+</body>
+</html>
