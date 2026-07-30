@@ -35,10 +35,14 @@
     background-position: center;
     opacity: 0.75;
   }
+  /* fades the hero image to the transition section's black at the
+     very bottom edge, so the two blend instead of cutting hard */
 
   /* stacks the logo (with its butterfly) above the book-now button,
      centered as a column within the hero */
   .hero-content{
+    position: relative;
+    z-index: 1;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -105,6 +109,17 @@
     box-shadow: 0 10px 16px rgba(0,0,0,0.5);
     cursor:pointer;
   }
+  .accommodation-btn{
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 0;
+    z-index: 3;
+    white-space: nowrap;
+    background: #5a6efa;
+    color: #fff;
+    border: none;
+  }
 
   /* ---------- transition breather sections: short, quiet, a beat
      between the bigger photo sections rather than a full-height block ---------- */
@@ -114,76 +129,145 @@
     flex-direction: column;
     gap: 28px;
   }
-  #transition-2{
-    align-items: flex-start;
-  }
-  .beach-text{
-    display:flex;
-    flex-direction:column;
-    gap: 2px;
-    text-align: left;
-  }
-  .beach-line{
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 600;
-    text-transform: lowercase;
-    color: #e8dcc0;
-    font-size: 1.5rem;
-    line-height: 1.3;
-    margin-left: 20px;
-  }
-  .beach-line-emphasis{
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 800;
-    font-style: italic;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #e8dcc0;
-    font-size: 1.9rem;
-    line-height: 1.3;
-  }
-
-  /* slide-in-from-right on scroll — same start time and same duration
-     for both, so they arrive together. Distances differ (text starts
-     fully off-screen, image starts closer to its resting spot since
-     it's already near the right edge) which just means the text moves
-     faster to cover more ground in the same time — that's expected,
-     not a mismatch. */
-  #transition-2 .beach-diagonal-wrap{
-    transform: translateX(700px); /* already near the right edge — just needs to clear it */
-    transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
-  }
-  #transition-2 .beach-text{
-    transform: translateX(1400px); /* fully off past the right edge of any breakpoint width */
-    transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
-  }
-  #transition-2.in-view .beach-diagonal-wrap{
-    transform: translateX(0);
-  }
-  #transition-2.in-view .beach-text{
-    transform: translateX(0);
-  }
-
   #transition-1{
-    background:#111;
+    background:#000;
     overflow:hidden;
   }
-  /* pop-up-from-below with overshoot: starts pushed down, then springs
-     past its resting spot slightly before settling — like it popped up */
+  /* torn white paper ribbons, straddling the seams between hero/transition-1
+     and transition-1/gallery — negative margins pull them over both
+     neighboring sections so they read as a strip laid on top, not content
+     confined inside one section */
+  .paper-ribbon{
+    position: relative;
+    z-index: 5;
+    height: 34px;
+    margin-top: -17px;
+    margin-bottom: -17px;
+    background: #fff;
+  }
+  .paper-ribbon-1{
+    clip-path: polygon(
+      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+      70% 30%, 80% 32%, 90% 25%, 100% 25%,
+      100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
+      30% 74%, 20% 60%, 10% 67%, 0% 64%
+    );
+  }
+  .paper-ribbon-2{
+    clip-path: polygon(
+      0% 35%, 10% 29%, 20% 35%, 30% 29%, 40% 34%, 50% 38%, 60% 33%,
+      70% 26%, 80% 33%, 90% 36%, 100% 28%,
+      100% 71%, 90% 73%, 80% 68%, 70% 67%, 60% 65%, 50% 60%, 40% 62%,
+      30% 69%, 20% 60%, 10% 61%, 0% 70%
+    );
+  }
+  .hibiscus-decor{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #transition-1.in-view .hibiscus-decor{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* soft radiant glow, slowly spinning behind the flower */
+  .hibiscus-glow{
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 380px; height: 380px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(226,20,25,0.55) 0%,
+      rgba(226,20,25,0.42) 15%,
+      rgba(226,20,25,0.28) 30%,
+      rgba(226,20,25,0.16) 45%,
+      rgba(226,20,25,0.08) 60%,
+      rgba(226,20,25,0.03) 75%,
+      rgba(226,20,25,0.008) 88%,
+      rgba(226,20,25,0) 100%);
+    filter: blur(6px);
+    animation: glow-pulse 6s ease-in-out infinite;
+  }
+  @keyframes glow-pulse{
+    0%, 100%{ transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
+    50%{ transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+  }
+  /* pinwheel-style alternating rays layered on top of the soft glow,
+     slowly rotating — solid wedges from center to edge like a sunburst */
+  .hibiscus-rays{
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 1400px; height: 1400px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(226,20,25,0.55) 0deg 15deg,
+      transparent 15deg 30deg
+    );
+    -webkit-mask-image: radial-gradient(circle,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,0.590) 10%,
+      rgba(0,0,0,0.328) 20%,
+      rgba(0,0,0,0.168) 30%,
+      rgba(0,0,0,0.078) 40%,
+      rgba(0,0,0,0.031) 50%,
+      rgba(0,0,0,0.010) 60%,
+      rgba(0,0,0,0.002) 70%,
+      rgba(0,0,0,0) 80%,
+      rgba(0,0,0,0) 90%,
+      rgba(0,0,0,0) 100%);
+    mask-image: radial-gradient(circle,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,0.590) 10%,
+      rgba(0,0,0,0.328) 20%,
+      rgba(0,0,0,0.168) 30%,
+      rgba(0,0,0,0.078) 40%,
+      rgba(0,0,0,0.031) 50%,
+      rgba(0,0,0,0.010) 60%,
+      rgba(0,0,0,0.002) 70%,
+      rgba(0,0,0,0) 80%,
+      rgba(0,0,0,0) 90%,
+      rgba(0,0,0,0) 100%);
+    filter: blur(1.5px);
+    animation: glow-spin 24s linear infinite;
+  }
+  @keyframes glow-spin{
+    to{ transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  .tagline-hibiscus{
+    position: relative;
+    width: 120px;
+    height:auto;
+    transform-origin: 50% 55%;
+    animation: hibiscus-wiggle 1.8s steps(1, end) infinite;
+    filter:
+      url(#stickerOutlineSoft)
+      saturate(1.1) contrast(1.1)
+      drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+  }
+  /* two-frame back-and-forth tilt, no in-between easing — a little snap
+     to it rather than a smooth sway */
+  @keyframes hibiscus-wiggle{
+    0%{ transform: rotate(-10deg); }
+    50%{ transform: rotate(10deg); }
+  }
   .plant-cutout-left{
     position:absolute;
-    left: 0; bottom: 0;
+    left: 50%; top: 50%;
     width: 170px;
     height:auto;
-    transform: scaleX(-1) translateY(140px); /* mirrored + pushed down, pre-reveal */
-    transition: transform 0.85s cubic-bezier(.34, 1.56, .64, 1);
+    transform: translate(-50%, -50%) scaleX(-1);
     filter:
       url(#stickerOutline)
       saturate(1.1) contrast(1.1)
       drop-shadow(0 10px 14px rgba(0,0,0,0.45));
-  }
-  #transition-1.in-view .plant-cutout-left{
-    transform: scaleX(-1) translateY(0);
   }
   /* same pop-up-with-overshoot as the plant, starting a touch later */
   .hibiscus-cutout-right{
@@ -202,92 +286,22 @@
   #transition-1.in-view .hibiscus-cutout-right{
     transform: scaleX(-1) translateY(0);
   }
-  .nature-text{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap: 2px;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  #transition-1.in-view .nature-text{
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.2s; /* follows the plant's pop-up a beat behind */
-  }
-  .nature-line{
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color:#e8dcc0;
-    font-size: 1.3rem;
-  }
-  .nature-cursive{
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: lowercase;
-    color:#e8dcc0;
-    font-size: 3.3rem;
-    line-height: 1;
-  }
-
-  /* ---------- second transition: magic beach photo, diagonal-cut,
-     bottom-right, sized as a fraction of the page width (golden ratio) ---------- */
-  #transition-2{ background:#161b14; overflow:hidden; }
-  /* the filter goes on this outer wrapper — filter runs BEFORE clip-path
-     per spec, so putting the sticker outline here means it sees the
-     already-clipped jagged shape's real alpha edge from the child img */
-  .beach-diagonal-wrap{
-    position:absolute;
-    right: 0; top: 0;
-    width: 61.8vw;
-    height: 100%;
-    filter:
-      url(#stickerOutlineBig)
-      drop-shadow(-10px 0 20px rgba(0,0,0,0.5));
-  }
-  .beach-diagonal{
-    display:block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* diagonal cut from the top-center down to the bottom-left corner —
-       mostly straight, with just a few gentle waves so it reads as a
-       hand-cut edge rather than a perfectly ruler-straight line */
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 0% 100%,
-      9.5% 85%, 13% 70%, 24.5% 55%, 28% 40%, 39.5% 25%, 43% 10%,
-      50% 0%
-    );
-  }
-
   /* mobile: logo takes more width, butterfly lands a bit further in/up
      since the wordmark wraps tighter on a narrow screen */
   @media (max-width: 600px){
     #hero{ padding-left: 28px; padding-right: 28px; }
+    #hero::before{ top: -20px; bottom: -20px; background-size: cover; }
     .logo{ width: min(78vw, 520px); }
     .butterfly-wrap{
       width: 100px; height: 114px;
       margin-left: -50px; margin-top: -35px;
     }
-    #transition-1{ min-height: 40vh; padding-right: 8px; align-items: flex-end; justify-content: center; }
-    .plant-cutout-left{ width: 210px; bottom: -30px; left: -55px; } /* looks like it's growing up out of the section's bottom edge */
+    #transition-1{ min-height: 20vh; }
+    .tagline-hibiscus{ width: 100px; }
+    .hibiscus-glow{ width: 300px; height: 300px; }
+    .hibiscus-rays{ width: 1100px; height: 1100px; }
+    .plant-cutout-left{ width: 210px; }
     .hibiscus-cutout-right{ display: none; }
-    .nature-text{ margin-top: 50px; margin-right: 20px; align-items:flex-end; }
-    .nature-line, .nature-cursive{ text-align:center; }
-    .nature-line{ font-size: 1rem; }
-    .nature-cursive{ font-size: 2rem; }
-    .beach-diagonal-wrap{
-      right: -40px; /* shifted right so it doesn't overlap the text */
-      filter:
-        url(#stickerOutlineSmall)
-        drop-shadow(-10px 0 20px rgba(0,0,0,0.5));
-    }
-    .beach-line{ font-size: 1.15rem; }
-    .beach-line-emphasis{ font-size: 1.4rem; }
   }
 
   /* tablet: sits between mobile and desktop proportions */
@@ -302,12 +316,31 @@
       font-size: 1.7rem;
     }
     .transition{ min-height: 70vh; }
+    #transition-1{ min-height: 30vh; }
+    .tagline-hibiscus{ width: 150px; }
+    .hibiscus-glow{ width: 440px; height: 440px; }
+    .hibiscus-rays{ width: 1600px; height: 1600px; }
     .plant-cutout-left{ width: 280px; }
     .hibiscus-cutout-right{ width: 340px; }
-    .beach-diagonal-wrap{
-      filter:
-        url(#stickerOutlineMed)
-        drop-shadow(-10px 0 20px rgba(0,0,0,0.5));
+    .paper-ribbon-1{
+      clip-path: polygon(
+        0% 30%, 7.14% 38%, 14.29% 38%, 21.43% 34%, 28.57% 40%, 35.71% 31%,
+        42.86% 40%, 50% 30%, 57.14% 32%, 64.29% 25%, 71.43% 25%, 78.57% 36%,
+        85.71% 38%, 92.86% 27%, 100% 29%,
+        100% 60%, 92.86% 73%, 85.71% 65%, 78.57% 70%, 71.43% 61%, 64.29% 68%,
+        57.14% 67%, 50% 62%, 42.86% 71%, 35.71% 63%, 28.57% 65%, 21.43% 74%,
+        14.29% 60%, 7.14% 67%, 0% 64%
+      );
+    }
+    .paper-ribbon-2{
+      clip-path: polygon(
+        0% 35%, 7.14% 29%, 14.29% 35%, 21.43% 29%, 28.57% 34%, 35.71% 38%,
+        42.86% 33%, 50% 26%, 57.14% 33%, 64.29% 36%, 71.43% 28%, 78.57% 36%,
+        85.71% 25%, 92.86% 25%, 100% 28%,
+        100% 72%, 92.86% 73%, 85.71% 62%, 78.57% 68%, 71.43% 71%, 64.29% 73%,
+        57.14% 68%, 50% 67%, 42.86% 65%, 35.71% 60%, 28.57% 62%, 21.43% 69%,
+        14.29% 60%, 7.14% 61%, 0% 70%
+      );
     }
   }
 
@@ -319,54 +352,32 @@
       font-size: 2.3rem;
     }
     .transition{ min-height: 85vh; }
+    #transition-1{ min-height: 35vh; }
+    .tagline-hibiscus{ width: 180px; }
+    .hibiscus-glow{ width: 500px; height: 500px; }
+    .hibiscus-rays{ width: 1900px; height: 1900px; }
     .plant-cutout-left{ width: 380px; }
     .hibiscus-cutout-right{ width: 460px; }
-    .beach-text{ margin-left: 20px; }
-    #hammock-section{ min-height: 100vh; }
-  }
-
-  /* ---------- hammock photo section: full-bleed image, breather-height ---------- */
-  #hammock-section{
-    min-height: 60vh;
-    background-image: url('Ruan-images/hammock-patio.jpeg');
-    background-size: cover;
-    background-position: center;
-    align-items: flex-end; /* caption sits toward the bottom of the section */
-  }
-  /* ::before so it paints under the real caption content, not over it */
-  #hammock-section::before{
-    content:"";
-    position:absolute; inset:0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 45%);
-  }
-  .hammock-caption{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    color:#fff;
-    font-family: Georgia, 'Times New Roman', serif;
-    font-style: italic;
-    font-weight: 400;
-    text-align:center;
-    padding-bottom: 40px;
-  }
-  .hammock-line1{
-    display:flex;
-    align-items:center;
-    gap: 12px;
-    font-size: 2.8rem;
-    letter-spacing: 0.5px;
-  }
-  .brand-new-img{
-    height: 0.85em;
-    width:auto;
-    display:block;
-  }
-  .hammock-line2{
-    font-size: 2.8rem;
-    letter-spacing: 0.5px;
-    text-transform: none;
+    .paper-ribbon-1{
+      clip-path: polygon(
+        0% 30%, 5% 38%, 10% 38%, 15% 34%, 20% 40%, 25% 31%, 30% 40%,
+        35% 30%, 40% 32%, 45% 25%, 50% 25%, 55% 36%, 60% 38%, 65% 27%,
+        70% 29%, 75% 32%, 80% 32%, 85% 26%, 90% 38%, 95% 38%, 100% 39%,
+        100% 65%, 95% 66%, 90% 73%, 85% 69%, 80% 68%, 75% 60%, 70% 61%,
+        65% 73%, 60% 65%, 55% 70%, 50% 61%, 45% 68%, 40% 67%, 35% 62%,
+        30% 71%, 25% 63%, 20% 65%, 15% 74%, 10% 60%, 5% 67%, 0% 64%
+      );
+    }
+    .paper-ribbon-2{
+      clip-path: polygon(
+        0% 35%, 5% 29%, 10% 35%, 15% 29%, 20% 34%, 25% 38%, 30% 33%,
+        35% 26%, 40% 33%, 45% 36%, 50% 28%, 55% 36%, 60% 25%, 65% 25%,
+        70% 28%, 75% 40%, 80% 36%, 85% 25%, 90% 35%, 95% 40%, 100% 26%,
+        100% 65%, 95% 72%, 90% 67%, 85% 72%, 80% 71%, 75% 72%, 70% 75%,
+        65% 73%, 60% 62%, 55% 68%, 50% 71%, 45% 73%, 40% 68%, 35% 67%,
+        30% 65%, 25% 60%, 20% 62%, 15% 69%, 10% 60%, 5% 61%, 0% 70%
+      );
+    }
   }
 
   /* ---------- gallery: garden shot tall on the left, the other two
@@ -374,21 +385,33 @@
   #gallery-section{
     min-height: auto;
     padding: 0;
+    background: #000;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 8px;
+    gap: 16px;
     height: 70vh;
   }
   #gallery-section img{
     width: 100%;
     height: 100%;
+    min-width: 0;
+    min-height: 0;
     object-fit: cover;
     display: block;
   }
   #gallery-section img:nth-child(1){ grid-column: 1; grid-row: 1 / 3; } /* garden — tall, left */
   #gallery-section img:nth-child(2){ grid-column: 2; grid-row: 1; }     /* bathroom — top right */
   #gallery-section img:nth-child(3){ grid-column: 2; grid-row: 2; }     /* room A3 — bottom right */
+  @media (max-width: 600px){
+    #gallery-section{ gap: 8px; height: 50vh; }
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    #gallery-section{ height: 85vh; }
+  }
+  @media (min-width: 1025px){
+    #gallery-section{ height: 128vh; }
+  }
 </style>
 </head>
 <body>
@@ -432,6 +455,16 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <!-- thin sticker outline, same crisp style as the others just narrower -->
+    <filter id="stickerOutlineSoft" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </svg>
 
   <section id="hero">
@@ -453,40 +486,23 @@
     </div>
   </section>
 
+  <div class="paper-ribbon paper-ribbon-1"></div>
+
   <section id="transition-1" class="transition">
-    <img class="plant-cutout-left" src="flowers/green-plant1-removebg-preview.png" alt="plant">
-
-    <div class="nature-text">
-      <span class="nature-line">experience</span>
-      <span class="nature-cursive">abundance</span>
-    </div>
-
-    <img class="hibiscus-cutout-right" src="flowers/red-hibiscus-removebg-preview.png" alt="red hibiscus">
-  </section>
-
-  <section id="hammock-section">
-    <div class="hammock-caption">
-      <div class="hammock-line1">
-        8 <img class="brand-new-img" src="flowers/brand-new-removebg-preview.png" alt="brand new">
-      </div>
-      <div class="hammock-line2">BUNGALOWS</div>
+    <div class="hibiscus-decor">
+      <div class="hibiscus-glow"></div>
+      <div class="hibiscus-rays"></div>
+      <img class="tagline-hibiscus" src="flowers/red-hibiscus-removebg-preview.png" alt="red hibiscus">
     </div>
   </section>
 
-  <section id="transition-2" class="transition">
-    <div class="beach-text">
-      <span class="beach-line">2 minutes from</span>
-      <span class="beach-line-emphasis">magic beach</span>
-    </div>
-    <div class="beach-diagonal-wrap">
-      <img class="beach-diagonal" src="flowers/magic-beach.png" alt="magic beach">
-    </div>
-  </section>
+  <div class="paper-ribbon paper-ribbon-2"></div>
 
   <section id="gallery-section">
     <img src="Ruan-images/flowers-garden-family-friendly.jpeg" alt="Family-friendly garden">
     <img src="Ruan-images/bathroom-warm-shower.jpeg" alt="Warm shower bathroom">
     <img src="Ruan-images/rooma3-made-bed-garden-view.jpeg" alt="Room A3 made bed with garden view">
+    <a class="book-now accommodation-btn" href="#">Accommodation</a>
   </section>
 
   <script>
@@ -621,21 +637,7 @@
 
     setTimeout(mainLoop, 300);
 
-    // reveal transition-2's text + beach image with a slide-in-from-right
-    // once the section scrolls into view, instead of always being visible
-    const transition2 = document.getElementById('transition-2');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting){
-          transition2.classList.add('in-view');
-          revealObserver.unobserve(transition2);
-        }
-      });
-    }, { threshold: 0.35 });
-    revealObserver.observe(transition2);
-
-    // same idea for transition-1: plant pops up from below with overshoot,
-    // text fades in from below a beat behind
+    // transition-1: hibiscus pops up from below with overshoot
     const transition1 = document.getElementById('transition-1');
     const revealObserver1 = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
