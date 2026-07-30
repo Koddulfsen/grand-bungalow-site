@@ -104,7 +104,7 @@
     text-transform: uppercase;
     color:#fff8ef;
     text-decoration: none;
-    background:#c4602f;
+    background:#f06e82;
     clip-path: polygon(2% 8%, 20% 0%, 45% 4%, 70% 0%, 98% 6%, 100% 55%, 96% 100%, 60% 96%, 30% 100%, 4% 92%);
     box-shadow: 0 10px 16px rgba(0,0,0,0.5);
     cursor:pointer;
@@ -119,6 +119,7 @@
     background: #5a6efa;
     color: #fff;
     border: none;
+    opacity: 0;
   }
 
   /* ---------- transition breather sections: short, quiet, a beat
@@ -129,7 +130,7 @@
     flex-direction: column;
     gap: 28px;
   }
-  #transition-1{
+  #transition-1, #transition-2{
     background:#000;
     overflow:hidden;
   }
@@ -175,6 +176,8 @@
     opacity: 1;
     transform: translateY(0);
   }
+  .hibiscus-rays{ opacity: 0; transition: opacity 0.8s ease; }
+  #transition-1.in-view .hibiscus-rays{ opacity: 1; }
   /* soft radiant glow, slowly spinning behind the flower */
   .hibiscus-glow{
     position: absolute;
@@ -183,14 +186,14 @@
     transform: translate(-50%, -50%);
     border-radius: 50%;
     background: radial-gradient(circle,
-      rgba(226,20,25,0.55) 0%,
-      rgba(226,20,25,0.42) 15%,
-      rgba(226,20,25,0.28) 30%,
-      rgba(226,20,25,0.16) 45%,
-      rgba(226,20,25,0.08) 60%,
-      rgba(226,20,25,0.03) 75%,
-      rgba(226,20,25,0.008) 88%,
-      rgba(226,20,25,0) 100%);
+      rgba(240,110,130,0.55) 0%,
+      rgba(240,110,130,0.42) 15%,
+      rgba(240,110,130,0.28) 30%,
+      rgba(240,110,130,0.16) 45%,
+      rgba(240,110,130,0.08) 60%,
+      rgba(240,110,130,0.03) 75%,
+      rgba(240,110,130,0.008) 88%,
+      rgba(240,110,130,0) 100%);
     filter: blur(6px);
     animation: glow-pulse 6s ease-in-out infinite;
   }
@@ -203,12 +206,12 @@
   .hibiscus-rays{
     position: absolute;
     left: 50%; top: 50%;
-    width: 1400px; height: 1400px;
+    width: 340vw; height: 340vw;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     background: repeating-conic-gradient(
       from 0deg,
-      rgba(226,20,25,0.55) 0deg 15deg,
+      rgba(240,110,130,0.55) 0deg 15deg,
       transparent 15deg 30deg
     );
     -webkit-mask-image: radial-gradient(circle,
@@ -249,7 +252,7 @@
     animation: hibiscus-wiggle 1.8s steps(1, end) infinite;
     filter:
       url(#stickerOutlineSoft)
-      saturate(1.1) contrast(1.1)
+      hue-rotate(-20deg) saturate(0.55) brightness(1.4) contrast(1.0)
       drop-shadow(0 10px 14px rgba(0,0,0,0.45));
   }
   /* two-frame back-and-forth tilt, no in-between easing — a little snap
@@ -280,11 +283,109 @@
     transition-delay: 0.1s;
     filter:
       url(#stickerOutline)
-      saturate(1.1) contrast(1.1)
+      hue-rotate(-20deg) saturate(0.55) brightness(1.4) contrast(1.0)
       drop-shadow(0 10px 14px rgba(0,0,0,0.45));
   }
   #transition-1.in-view .hibiscus-cutout-right{
     transform: scaleX(-1) translateY(0);
+  }
+
+  /* ---------- transition-2: plant, mirrors transition-1's flower ---------- */
+  .plant-decor{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #transition-2.in-view .plant-decor{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .plant-rays{ opacity: 0; transition: opacity 0.8s ease; }
+  #transition-2.in-view .plant-rays{ opacity: 1; }
+  /* soft radiant glow behind the plant, matching the hibiscus treatment
+     but in the plant's own green */
+  .plant-glow{
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 500px; height: 500px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(140,180,60,0.55) 0%,
+      rgba(140,180,60,0.42) 15%,
+      rgba(140,180,60,0.28) 30%,
+      rgba(140,180,60,0.16) 45%,
+      rgba(140,180,60,0.08) 60%,
+      rgba(140,180,60,0.03) 75%,
+      rgba(140,180,60,0.008) 88%,
+      rgba(140,180,60,0) 100%);
+    filter: blur(6px);
+    animation: glow-pulse 6s ease-in-out infinite;
+  }
+  .plant-rays{
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 400vw; height: 400vw;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(140,180,60,0.55) 0deg 15deg,
+      transparent 15deg 30deg
+    );
+    -webkit-mask-image: radial-gradient(circle,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,0.590) 10%,
+      rgba(0,0,0,0.328) 20%,
+      rgba(0,0,0,0.168) 30%,
+      rgba(0,0,0,0.078) 40%,
+      rgba(0,0,0,0.031) 50%,
+      rgba(0,0,0,0.010) 60%,
+      rgba(0,0,0,0.002) 70%,
+      rgba(0,0,0,0) 80%,
+      rgba(0,0,0,0) 90%,
+      rgba(0,0,0,0) 100%);
+    mask-image: radial-gradient(circle,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,0.590) 10%,
+      rgba(0,0,0,0.328) 20%,
+      rgba(0,0,0,0.168) 30%,
+      rgba(0,0,0,0.078) 40%,
+      rgba(0,0,0,0.031) 50%,
+      rgba(0,0,0,0.010) 60%,
+      rgba(0,0,0,0.002) 70%,
+      rgba(0,0,0,0) 80%,
+      rgba(0,0,0,0) 90%,
+      rgba(0,0,0,0) 100%);
+    filter: blur(1.5px);
+    animation: glow-spin 24s linear infinite;
+  }
+  .nature-plant{
+    position: relative;
+    width: 140px;
+    height: auto;
+    transform: scaleX(-1);
+    filter:
+      url(#stickerOutlineSoft)
+      saturate(1.1) contrast(1.1)
+      drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+  }
+  @media (max-width: 600px){
+    .plant-glow{ width: 400px; height: 400px; }
+    .nature-plant{ width: 115px; }
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    .plant-glow{ width: 580px; height: 580px; }
+    .nature-plant{ width: 175px; }
+  }
+  @media (min-width: 1025px){
+    .plant-glow{ width: 650px; height: 650px; }
+    .nature-plant{ width: 210px; }
   }
   /* mobile: logo takes more width, butterfly lands a bit further in/up
      since the wordmark wraps tighter on a narrow screen */
@@ -296,10 +397,9 @@
       width: 100px; height: 114px;
       margin-left: -50px; margin-top: -35px;
     }
-    #transition-1{ min-height: 20vh; }
+    #transition-1, #transition-2{ min-height: 20vh; }
     .tagline-hibiscus{ width: 100px; }
     .hibiscus-glow{ width: 300px; height: 300px; }
-    .hibiscus-rays{ width: 1100px; height: 1100px; }
     .plant-cutout-left{ width: 210px; }
     .hibiscus-cutout-right{ display: none; }
   }
@@ -316,10 +416,9 @@
       font-size: 1.7rem;
     }
     .transition{ min-height: 70vh; }
-    #transition-1{ min-height: 30vh; }
+    #transition-1, #transition-2{ min-height: 30vh; }
     .tagline-hibiscus{ width: 150px; }
     .hibiscus-glow{ width: 440px; height: 440px; }
-    .hibiscus-rays{ width: 1600px; height: 1600px; }
     .plant-cutout-left{ width: 280px; }
     .hibiscus-cutout-right{ width: 340px; }
     .paper-ribbon-1{
@@ -352,10 +451,9 @@
       font-size: 2.3rem;
     }
     .transition{ min-height: 85vh; }
-    #transition-1{ min-height: 35vh; }
+    #transition-1, #transition-2{ min-height: 35vh; }
     .tagline-hibiscus{ width: 180px; }
     .hibiscus-glow{ width: 500px; height: 500px; }
-    .hibiscus-rays{ width: 1900px; height: 1900px; }
     .plant-cutout-left{ width: 380px; }
     .hibiscus-cutout-right{ width: 460px; }
     .paper-ribbon-1{
@@ -389,7 +487,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 16px;
+    gap: 0;
     height: 70vh;
   }
   #gallery-section img{
@@ -403,14 +501,91 @@
   #gallery-section img:nth-child(1){ grid-column: 1; grid-row: 1 / 3; } /* garden — tall, left */
   #gallery-section img:nth-child(2){ grid-column: 2; grid-row: 1; }     /* bathroom — top right */
   #gallery-section img:nth-child(3){ grid-column: 2; grid-row: 2; }     /* room A3 — bottom right */
+  /* torn paper strips standing in for the grid's separator lines */
+  .gallery-seam-v{
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 34px;
+    margin-left: -17px;
+    z-index: 4;
+    background: #fff;
+    clip-path: polygon(
+      30% 0%, 38% 10%, 38% 20%, 34% 30%, 40% 40%, 31% 50%, 40% 60%,
+      30% 70%, 32% 80%, 25% 90%, 25% 100%,
+      75% 100%, 68% 90%, 67% 80%, 62% 70%, 71% 60%, 63% 50%, 65% 40%,
+      74% 30%, 60% 20%, 67% 10%, 64% 0%
+    );
+  }
+  .gallery-seam-h{
+    position: absolute;
+    left: 50%; right: 0; top: 50%;
+    height: 34px;
+    margin-top: -17px;
+    z-index: 4;
+    background: #fff;
+    clip-path: polygon(
+      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+      70% 30%, 80% 32%, 90% 25%, 100% 25%,
+      100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
+      30% 74%, 20% 60%, 10% 67%, 0% 64%
+    );
+  }
   @media (max-width: 600px){
-    #gallery-section{ gap: 8px; height: 50vh; }
+    #gallery-section{ height: 50vh; }
+    .gallery-seam-v{ width: 20px; margin-left: -10px; }
+    .gallery-seam-h{ height: 20px; margin-top: -10px; }
   }
   @media (min-width: 601px) and (max-width: 1024px){
     #gallery-section{ height: 85vh; }
   }
   @media (min-width: 1025px){
     #gallery-section{ height: 128vh; }
+  }
+
+  /* ---------- hammock section: single full-bleed photo, same
+     paper-ribbon-bordered treatment as the gallery grid ---------- */
+  #hammock-section{
+    min-height: auto;
+    padding: 0;
+    background: #000;
+    display: block;
+  }
+  #hammock-section img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2501 / 1391;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ---------- hammock-photo section: the actual hammock picture ---------- */
+  #hammock-photo-section{
+    min-height: auto;
+    padding: 0;
+    background: #000;
+    display: block;
+  }
+  #hammock-photo-section img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1448 / 1086;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ---------- towel-closeup section: bed/towel closeup photo ---------- */
+  #towel-section{
+    min-height: auto;
+    padding: 0;
+    background: #000;
+    display: block;
+  }
+  #towel-section img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3120 / 2080;
+    object-fit: cover;
+    display: block;
   }
 </style>
 </head>
@@ -489,9 +664,9 @@
   <div class="paper-ribbon paper-ribbon-1"></div>
 
   <section id="transition-1" class="transition">
+    <div class="hibiscus-rays"></div>
     <div class="hibiscus-decor">
       <div class="hibiscus-glow"></div>
-      <div class="hibiscus-rays"></div>
       <img class="tagline-hibiscus" src="flowers/red-hibiscus-removebg-preview.png" alt="red hibiscus">
     </div>
   </section>
@@ -502,7 +677,37 @@
     <img src="Ruan-images/flowers-garden-family-friendly.jpeg" alt="Family-friendly garden">
     <img src="Ruan-images/bathroom-warm-shower.jpeg" alt="Warm shower bathroom">
     <img src="Ruan-images/rooma3-made-bed-garden-view.jpeg" alt="Room A3 made bed with garden view">
-    <a class="book-now accommodation-btn" href="#">Accommodation</a>
+    <div class="gallery-seam-v"></div>
+    <div class="gallery-seam-h"></div>
+    <a class="book-now accommodation-btn" href="#">Our Bungalows</a>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-1"></div>
+
+  <section id="transition-2" class="transition">
+    <div class="plant-rays"></div>
+    <div class="plant-decor">
+      <div class="plant-glow"></div>
+      <img class="nature-plant" src="flowers/green-plant1-removebg-preview.png" alt="green plant">
+    </div>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-2"></div>
+
+  <section id="hammock-section">
+    <img src="flowers/magic-beach.png" alt="Beach">
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-1"></div>
+
+  <section id="hammock-photo-section">
+    <img src="Ruan-images/hammock-patio.jpeg" alt="Hammock on the patio">
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-2"></div>
+
+  <section id="towel-section">
+    <img src="Ruan-images/bed-clean-towel-closeup.jpeg" alt="Clean towel and bed closeup">
   </section>
 
   <script>
@@ -648,6 +853,18 @@
       });
     }, { threshold: 0.35 });
     revealObserver1.observe(transition1);
+
+    // transition-2: plant + "Nature" row fades in
+    const transition2 = document.getElementById('transition-2');
+    const revealObserver2 = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          transition2.classList.add('in-view');
+          revealObserver2.unobserve(transition2);
+        }
+      });
+    }, { threshold: 0.35 });
+    revealObserver2.observe(transition2);
   </script>
 </body>
 </html>
