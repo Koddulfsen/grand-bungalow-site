@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Bungalows — Grand Bungalow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+  html,body{
+    margin:0; padding:0;
+    background:#000;
+  }
+  * { box-sizing: border-box; }
+
+  section{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ---------- shared butterfly building blocks ---------- */
+  .butterfly-wrap{
+    position:absolute;
+    width: 190px; height: 217px;
+    margin-left: -95px; margin-top: -108px;
+    left: 95%; top: 6%;
+    opacity:0;
+  }
+  .butterfly{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    transform: scaleX(-1);
+  }
+  .butterfly img{
+    position:absolute; inset:0;
+    width: 100%;
+    height:auto;
+    opacity:0;
+    filter:
+      url(#stickerOutline)
+      saturate(0.92) contrast(1.05)
+      drop-shadow(0 6px 5px rgba(0,0,0,0.5));
+  }
+  .butterfly img.frame-active{ opacity:1; }
+
+  /* ---------- hammock-photo section: the actual hammock picture ---------- */
+  #hammock-photo-section{
+    min-height: auto;
+    padding: 0;
+    background: #000;
+    display: block;
+  }
+  #hammock-photo-section img:not(.brand-new-badge){
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1448 / 1086;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* smaller, stationary butterfly perched on the fence rail in the
+     hammock photo — just idles/flaps in place, no fly-in/out */
+  .butterfly-wrap-hammock{
+    width: 110px; height: 125px;
+    margin-left: -55px; margin-top: -62px;
+    left: 83%; top: 65%;
+    opacity: 1;
+  }
+  @media (max-width: 600px){
+    .butterfly-wrap-hammock{
+      width: 44px; height: 50px;
+      margin-left: -22px; margin-top: -25px;
+    }
+    .butterfly-wrap-hammock .butterfly img{
+      filter:
+        url(#stickerOutlineHammockMobile)
+        saturate(0.92) contrast(1.05)
+        drop-shadow(0 6px 5px rgba(0,0,0,0.5));
+    }
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    .butterfly-wrap-hammock{
+      width: 93px; height: 106px;
+      margin-left: -47px; margin-top: -53px;
+    }
+  }
+
+  /* "brand new" badge + "bungalows" text, bottom-left near the fence —
+     scales smoothly with viewport width instead of snapping at breakpoints */
+  .brand-new-row{
+    position: absolute;
+    left: 4%; bottom: 6%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand-new-badge{
+    width: clamp(160px, 30vw, 340px);
+    height: auto;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
+  }
+  .bungalows-label{
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff8ef;
+    font-size: clamp(38px, 7vw, 78px);
+    white-space: nowrap;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
+  }
+
+  /* ---------- paper ribbon (horizontal), stolen straight from
+     the home page — a torn-paper strip laid across a section seam ---------- */
+  .paper-ribbon{
+    position: relative;
+    z-index: 5;
+    height: 34px;
+    margin-top: -17px;
+    margin-bottom: -17px;
+    background: #fff;
+  }
+  .paper-ribbon-1{
+    clip-path: polygon(
+      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+      70% 30%, 80% 32%, 90% 25%, 100% 25%,
+      100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
+      30% 74%, 20% 60%, 10% 67%, 0% 64%
+    );
+  }
+
+
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="stickerOutline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="8" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- half-thickness outline for the hammock-fence butterfly on mobile -->
+    <filter id="stickerOutlineHammockMobile" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="4" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </svg>
+
+  <section id="hammock-photo-section">
+    <img class="hero-photo" src="Ruan-images/hammock-patio.jpeg" alt="Hammock on the patio">
+    <div class="butterfly-wrap butterfly-wrap-hammock" id="butterflyWrapHammock">
+      <div class="butterfly">
+        <img src="butterfly-imgs/1-removebg-preview.png" alt="butterfly resting" class="frame-active">
+        <img src="butterfly-imgs/2-removebg-preview.png" alt="">
+      </div>
+    </div>
+    <div class="brand-new-row">
+      <img class="brand-new-badge" src="flowers/brand-new-removebg-preview.png" alt="Brand New">
+    </div>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-1"></div>
+
+  <script>
+    function delay(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    // stationary butterfly on the hammock-photo fence: just idles in
+    // place, flapping between frame 1 and frame 2, forever (no fly in/out)
+    const hammockWrap = document.getElementById('butterflyWrapHammock');
+    const hammockFrames = hammockWrap.querySelectorAll('img');
+    function setHammockFrame(i){
+      hammockFrames.forEach(f => f.classList.remove('frame-active'));
+      hammockFrames[i].classList.add('frame-active');
+    }
+    async function hammockIdleLoop(){
+      while (true){
+        setHammockFrame(0);
+        await delay(900 + Math.random() * 1200);
+        setHammockFrame(1);
+        await delay(180);
+      }
+    }
+    hammockIdleLoop();
+  </script>
+</body>
+</html>
