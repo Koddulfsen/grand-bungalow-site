@@ -6,7 +6,7 @@
 <title>Our Bungalows — Grand Bungalow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
   html,body{
     margin:0; padding:0;
@@ -38,6 +38,7 @@
     position:absolute; inset:0;
     width: 100%;
     height:auto;
+    object-fit: contain;
     opacity:0;
     filter:
       url(#stickerOutline)
@@ -53,12 +54,98 @@
     background: #000;
     display: block;
   }
-  #hammock-photo-section img:not(.brand-new-badge){
+  #hammock-photo-section img{
     width: 100%;
     height: auto;
     aspect-ratio: 1448 / 1086;
     object-fit: cover;
     display: block;
+  }
+  /* darkens the bottom of the hero photo so the overlaid title/text stay
+     legible against the busy hammock/fence background */
+  .hero-shadow{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 45%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 100%);
+    pointer-events: none;
+  }
+  @media (max-width: 600px){
+    .hero-shadow{
+      height: 65%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%);
+    }
+  }
+
+  /* ---------- paper ribbon (horizontal), stolen straight from
+     the home page — a torn-paper strip laid across a section seam ---------- */
+  .paper-ribbon{
+    position: relative;
+    z-index: 5;
+    height: 34px;
+    margin-top: -17px;
+    margin-bottom: -17px;
+    background: #fff;
+  }
+  .paper-ribbon-1{
+    clip-path: polygon(
+      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+      70% 30%, 80% 32%, 90% 25%, 100% 25%,
+      100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
+      30% 74%, 20% 60%, 10% 67%, 0% 64%
+    );
+  }
+  .paper-ribbon-2{
+    clip-path: polygon(
+      0% 35%, 10% 29%, 20% 35%, 30% 29%, 40% 34%, 50% 38%, 60% 33%,
+      70% 26%, 80% 33%, 90% 36%, 100% 28%,
+      100% 71%, 90% 73%, 80% 68%, 70% 67%, 60% 65%, 50% 60%, 40% 62%,
+      30% 69%, 20% 60%, 10% 61%, 0% 70%
+    );
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    .paper-ribbon-1{
+      clip-path: polygon(
+        0% 30%, 7.14% 38%, 14.29% 38%, 21.43% 34%, 28.57% 40%, 35.71% 31%,
+        42.86% 40%, 50% 30%, 57.14% 32%, 64.29% 25%, 71.43% 25%, 78.57% 36%,
+        85.71% 38%, 92.86% 27%, 100% 29%,
+        100% 60%, 92.86% 73%, 85.71% 65%, 78.57% 70%, 71.43% 61%, 64.29% 68%,
+        57.14% 67%, 50% 62%, 42.86% 71%, 35.71% 63%, 28.57% 65%, 21.43% 74%,
+        14.29% 60%, 7.14% 67%, 0% 64%
+      );
+    }
+    .paper-ribbon-2{
+      clip-path: polygon(
+        0% 35%, 7.14% 29%, 14.29% 35%, 21.43% 29%, 28.57% 34%, 35.71% 38%,
+        42.86% 33%, 50% 26%, 57.14% 33%, 64.29% 36%, 71.43% 28%, 78.57% 36%,
+        85.71% 25%, 92.86% 25%, 100% 28%,
+        100% 72%, 92.86% 73%, 85.71% 62%, 78.57% 68%, 71.43% 71%, 64.29% 73%,
+        57.14% 68%, 50% 67%, 42.86% 65%, 35.71% 60%, 28.57% 62%, 21.43% 69%,
+        14.29% 60%, 7.14% 61%, 0% 70%
+      );
+    }
+  }
+  @media (min-width: 1025px){
+    .paper-ribbon-1{
+      clip-path: polygon(
+        0% 30%, 5% 38%, 10% 38%, 15% 34%, 20% 40%, 25% 31%, 30% 40%,
+        35% 30%, 40% 32%, 45% 25%, 50% 25%, 55% 36%, 60% 38%, 65% 27%,
+        70% 29%, 75% 32%, 80% 32%, 85% 26%, 90% 38%, 95% 38%, 100% 39%,
+        100% 65%, 95% 66%, 90% 73%, 85% 69%, 80% 68%, 75% 60%, 70% 61%,
+        65% 73%, 60% 65%, 55% 70%, 50% 61%, 45% 68%, 40% 67%, 35% 62%,
+        30% 71%, 25% 63%, 20% 65%, 15% 74%, 10% 60%, 5% 67%, 0% 64%
+      );
+    }
+    .paper-ribbon-2{
+      clip-path: polygon(
+        0% 35%, 5% 29%, 10% 35%, 15% 29%, 20% 34%, 25% 38%, 30% 33%,
+        35% 26%, 40% 33%, 45% 36%, 50% 28%, 55% 36%, 60% 25%, 65% 25%,
+        70% 28%, 75% 40%, 80% 36%, 85% 25%, 90% 35%, 95% 40%, 100% 26%,
+        100% 65%, 95% 72%, 90% 67%, 85% 72%, 80% 71%, 75% 72%, 70% 75%,
+        65% 73%, 60% 62%, 55% 68%, 50% 71%, 45% 73%, 40% 68%, 35% 67%,
+        30% 65%, 25% 60%, 20% 62%, 15% 69%, 10% 60%, 5% 61%, 0% 70%
+      );
+    }
   }
 
   /* smaller, stationary butterfly perched on the fence rail in the
@@ -88,52 +175,552 @@
     }
   }
 
-  /* "brand new" badge + "bungalows" text, bottom-left near the fence —
-     scales smoothly with viewport width instead of snapping at breakpoints */
-  .brand-new-row{
+  /* ---------- hero overlay: title + paragraph sitting on the bottom
+     of the hammock photo, on top of the .hero-shadow gradient ---------- */
+  .hero-overlay{
     position: absolute;
-    left: 4%; bottom: 6%;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 24px;
+  }
+  .intro-title{
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+    font-weight: 600;
+    color: #fff8ef;
+    font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+    letter-spacing: 0.3px;
+  }
+  .intro-title em{
+    font-style: italic;
+  }
+  .intro-text{
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    color: #cfc6ba;
+    font-size: clamp(0.92rem, 1.3vw, 1.05rem);
+    line-height: 1.7;
+    letter-spacing: 0.2px;
+    max-width: 560px;
+  }
+  @media (max-width: 600px){
+    .hero-overlay{ gap: 4px; }
+  }
+  @media (min-width: 601px){
+    .hero-overlay{ padding: 4% 4% 5%; }
+  }
+
+  /* ---------- amenities section: shared across all three bungalows ---------- */
+  #amenities-section{
+    min-height: auto;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 34px;
+    padding: 100px 24px 120px;
+    text-align: center;
+    background: #000;
   }
-  .brand-new-badge{
-    width: clamp(160px, 30vw, 340px);
-    height: auto;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
+  .amenities-title{
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    color: #fff8ef;
+    font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
   }
-  .bungalows-label{
+  @media (min-width: 601px){
+    #amenities-section{ padding-left: 4%; padding-right: 4%; }
+  }
+
+  /* ---------- room sections: photo + text, alternating sides ---------- */
+  .room-section{
+    display: flex;
+    min-height: auto;
+    background: #000;
+    padding: 0;
+    margin-bottom: 180px;
+  }
+  .room-section.reverse{
+    flex-direction: row-reverse;
+  }
+  .room-photo{
+    flex: 1 1 50%;
+    position: relative;
+    display: flex;
+    background: #fff;
+    overflow: hidden;
+  }
+  .room-photo img{
+    flex: 1 1 50%;
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* vertical torn-paper strip between the two photos, same technique as
+     the horizontal ribbons — just transposed so the tear runs top-to-bottom */
+  .room-photo-seam{
+    flex: 0 0 16px;
+    width: 16px;
+    margin: 0 -8px;
+    position: relative;
+    background: #fff;
+    z-index: 3;
+    clip-path: polygon(
+      30% 0%, 38% 10%, 38% 20%, 34% 30%, 40% 40%, 31% 50%, 40% 60%,
+      30% 70%, 32% 80%, 25% 90%, 25% 100%,
+      61% 100%, 68% 90%, 67% 80%, 62% 70%, 71% 60%, 63% 50%, 65% 40%,
+      74% 30%, 60% 20%, 67% 10%, 64% 0%
+    );
+  }
+  /* room-photo ribbons: same standalone .paper-ribbon divs as the hero,
+     just hidden above 600px for now */
+  .room-photo-ribbon{
+    display: none;
+  }
+  .paper-ribbon-thin{
+    height: 20px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+  /* tablet/desktop: top + bottom ribbons stretch across the whole
+     section (photo + info side by side) instead of just the photo,
+     straddling the section's top/bottom edge — the mid ribbon stays
+     mobile-only since it's for the stacked-photo seam. */
+  @media (min-width: 601px){
+    .room-section{ position: relative; }
+    .room-photo-ribbon:not(.room-photo-ribbon-mid){
+      display: block;
+      position: absolute;
+      left: 0; right: 0;
+      width: 100%;
+      margin: 0;
+      z-index: 5;
+    }
+    .room-photo-ribbon-bottom{
+      bottom: 0;
+      transform: translateY(50%);
+    }
+    .room-photo-ribbon:not(.room-photo-ribbon-mid):not(.room-photo-ribbon-bottom){
+      top: 0;
+      transform: translateY(-50%);
+    }
+  }
+  /* mobile: bungalow title + button, centered as a group over the photo */
+  .room-photo-overlay{
+    display: none;
+  }
+  /* shared title styling — sizing is tuned per breakpoint below, since
+     mobile needs a huge overlay title and desktop needs a much smaller
+     one that fits inside a single photo's width */
+  .room-photo-title{
+    margin: 0;
+    color: #fff8ef;
+    text-shadow: 0 6px 22px rgba(0,0,0,0.95), 0 3px 8px rgba(0,0,0,1), 0 1px 3px rgba(0,0,0,1);
+  }
+  .room-photo-title-classic{
     font-family: 'Playfair Display', serif;
     font-style: italic;
     font-weight: 600;
+  }
+  .room-photo-title-twin{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
+  }
+  .room-photo-title-kitchen{
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+  }
+  @media (max-width: 600px){
+    .room-photo-ribbon{ display: block; width: 100%; }
+    .room-photo{
+      height: auto;
+      aspect-ratio: 1448 / 1086;
+    }
+    .room-photo img{ height: 100%; }
+    .room-photo-overlay{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 6;
+      text-align: center;
+    }
+    .room-photo-title{
+      font-size: clamp(2.6rem, 10.5vw, 3.8rem);
+    }
+    .room-photo-title-kitchen{
+      font-size: clamp(3.2rem, 12.5vw, 4.6rem);
+    }
+    .room-photo-overlay .see-availability{
+      position: static;
+      transform: none;
+    }
+    .room-info h2{ display: none; }
+    .room-photo-third, .room-photo-seam-2, .room-photo-title-overlay, .room-button-panel{
+      display: none;
+    }
+    .room-bottom-row{ display: contents; }
+  }
+  /* tablet/desktop: photos row on top (now 3-wide, title overlaid on the
+     middle one), icon/animation panel + book button split 50/50 below */
+  @media (min-width: 601px){
+    .room-section, .room-section.reverse{ flex-direction: column; }
+    .room-photo{ flex: 0 0 auto; width: 100%; height: clamp(320px, 32vw, 520px); }
+    .room-photo img{ flex: 1 1 0; width: auto; min-width: 0; }
+    .room-photo-ribbon-mid{
+      display: block;
+      width: 100%;
+      margin-top: -10px;
+      margin-bottom: -10px;
+    }
+    .room-photo-title-overlay{
+      display: none;
+    }
+    .room-photo-title-overlay .room-photo-title{
+      font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+    }
+    .room-photo-title-overlay .room-photo-title-kitchen{
+      font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+    }
+    .room-bottom-row{
+      display: flex;
+      width: 100%;
+    }
+    .room-button-panel{
+      display: none;
+    }
+    .room-bottom-row .room-info{
+      flex: 1 1 100%;
+      align-items: center;
+      text-align: center;
+      padding: 0;
+    }
+    .room-bottom-row .room-strip{
+      padding-left: 6%;
+      padding-right: 6%;
+      border-radius: 0;
+    }
+    .room-bottom-row .room-info .icon-row{
+      justify-content: center;
+    }
+  }
+  /* tablet only: same title-over-photo + button treatment as mobile,
+     just sized down a bit — desktop keeps it hidden for now */
+  @media (min-width: 601px) and (max-width: 1024px){
+    .room-photo-overlay{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 6;
+      text-align: center;
+    }
+    .room-photo-title{
+      font-size: clamp(2.6rem, 6.5vw, 3.6rem);
+    }
+    .room-photo-title-kitchen{
+      font-size: clamp(3.2rem, 7.5vw, 4.4rem);
+    }
+    .room-photo-overlay .see-availability{
+      position: static;
+      transform: none;
+    }
+  }
+  /* desktop: back to a side-by-side split — photos on one side, title +
+     animated icon strip + button on the other, alternating sides via
+     .reverse. Overrides the tablet/mobile stacked treatment above. */
+  .room-panel-title{
+    display: none;
+    margin: 0;
     color: #fff8ef;
-    font-size: clamp(38px, 7vw, 78px);
+  }
+  .room-panel-divider{
+    display: none;
+  }
+  .room-panel-seam{
+    display: none;
+  }
+  @media (min-width: 1025px){
+    .room-panel-divider{
+      display: block;
+      flex: 0 0 auto;
+      width: 100%;
+    }
+    .room-panel-seam{
+      display: block;
+      align-self: stretch;
+    }
+    .room-section, .room-section.reverse{ flex-direction: row; margin-bottom: 180px; }
+    .room-section.reverse{ flex-direction: row-reverse; }
+    .room-photo{ flex: 1 1 61.8%; width: auto; height: clamp(360px, 34vw, 480px); }
+    .room-photo-ribbon-mid{ display: none; }
+    .room-bottom-row{
+      flex: 1 1 38.2%;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 6%;
+    }
+    /* unwrap room-info so the title, the icon/animation strip, and the
+       button become three siblings stacked (and evenly spaced) in this
+       column — each one just hugs its own content instead of stretching
+       to fill a third of the panel's height */
+    .room-bottom-row .room-info{
+      display: contents;
+    }
+    .room-panel-title{
+      display: block;
+      flex: 0 0 auto;
+      font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+      margin-bottom: 30px;
+    }
+    .room-bottom-row .room-strip{
+      flex: 0 0 auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .room-bottom-row .room-info .icon-row{
+      justify-content: center;
+    }
+    .room-button-panel{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      padding: 0;
+      margin-top: 30px;
+    }
+    .room-button-panel .see-availability{
+      position: static;
+      transform: none;
+    }
+  }
+  .room-info{
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 18px;
+    padding: 60px 6%;
+    background: #000;
+  }
+  /* ---------- icon badges: shared by the per-room bed/kitchen icons
+     and the "all bungalows have" amenity row ---------- */
+  .icon-row{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  #amenities-section .icon-row{
+    justify-content: center;
+  }
+  .icon-badge{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .icon-badge svg{
+    width: 48px;
+    height: 48px;
+    color: #fff8ef;
+  }
+  .icon-badge .icon-img{
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  #amenities-section .icon-badge svg,
+  #amenities-section .icon-badge .icon-img{
+    width: 44px;
+    height: 44px;
+  }
+  #amenities-section .icon-badge .icon-label{
+    font-size: 0.8rem;
+  }
+  .icon-badge .icon-label{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    color: #fff8ef;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
     white-space: nowrap;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
   }
 
-  /* ---------- paper ribbon (horizontal), stolen straight from
-     the home page — a torn-paper strip laid across a section seam ---------- */
-  .paper-ribbon{
+  /* ---------- animated strip behind each bungalow's icon row —
+     one motif per type, matching that type's button accent color ---------- */
+  .room-strip{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 22px 20px;
+    border-radius: 2px;
+  }
+  .room-strip .icon-row{
     position: relative;
     z-index: 5;
-    height: 34px;
-    margin-top: -17px;
-    margin-bottom: -17px;
-    background: #fff;
   }
-  .paper-ribbon-1{
-    clip-path: polygon(
-      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
-      70% 30%, 80% 32%, 90% 25%, 100% 25%,
-      100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
-      30% 74%, 20% 60%, 10% 67%, 0% 64%
+  .room-strip::before,
+  .room-strip::after{
+    content: "";
+    position: absolute;
+  }
+
+  /* classic: caution-tape stripes marching left to right, same repeating-
+     band technique (and roughly the thickness) as the home page's
+     hibiscus/plant rays, just as straight diagonal bands instead of a
+     spinning conic sunburst */
+  .room-strip-classic::before{
+    inset: -20px -60px;
+    background: repeating-linear-gradient(
+      100deg,
+      rgba(120,200,190,0.55) 0px, rgba(120,200,190,0.55) 30px,
+      rgba(120,200,190,0.16) 30px, rgba(120,200,190,0.16) 60px
     );
+    animation: strip-classic-march 5s linear infinite;
+  }
+  @keyframes strip-classic-march{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-60.9px); }
   }
 
+  /* twin: upright bands that wave in place — sway/skew back and forth
+     rather than travelling across, like a curtain rippling */
+  .room-strip-twin::before{
+    inset: -30px -10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 110'%3E%3Crect width='60' height='110' fill='%23884a5c'/%3E%3Cpath d='M30,-55 Q15,-27.5 30,0 Q45,27.5 30,55 Q15,82.5 30,110 Q45,137.5 30,165' stroke='%234a1224' stroke-width='34' stroke-linejoin='round' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 60px 110px;
+    animation: strip-twin-wave 2.6s ease-in-out infinite;
+    transform-origin: 50% 50%;
+  }
+  @keyframes strip-twin-wave{
+    0%, 100%{ transform: skewX(0deg); }
+    50%{ transform: skewX(-5deg); }
+  }
 
+  /* kitchen: the lightest wave shade is now just the strip's flat
+     background instead of an animated layer — only 2 wave bands left,
+     bobbing on top of it */
+  .room-strip-kitchen{
+    background: #e493b3;
+  }
+  /* kitchen: 2 stacked horizontal wave bands bobbing up and down, like
+     layered sea swells. Each SVG tile is a wave crest with a solid fill
+     running 300px below it, and each layer is 300px tall — comfortably
+     more than the strip will ever be — so the fill always reaches well
+     past the strip's bottom edge (clipped by its overflow:hidden) no
+     matter how far the bob animation shifts it. The bottom-most wave
+     sits at the highest z-index so it reads as the frontmost layer. */
+  .room-strip-kitchen .wave-layer{
+    position: absolute;
+    left: -10px; right: -10px;
+    height: 300px;
+    background-repeat: repeat-x;
+    background-size: 100px 300px;
+    background-position: top left;
+  }
+  .room-strip-kitchen .wave-layer-2{
+    top: 0%;
+    z-index: 2;
+    background-position: 50px top;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Cpath d='M0,30 C12.5,20 37.5,20 50,30 C62.5,40 87.5,40 100,30 L100,300 L0,300 Z' fill='%23c85a86'/%3E%3C/svg%3E");
+    animation: kitchen-bob-2 3.4s ease-in-out infinite;
+  }
+  .room-strip-kitchen .wave-layer-3{
+    top: 35%;
+    z-index: 3;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Cpath d='M0,30 C12.5,20 37.5,20 50,30 C62.5,40 87.5,40 100,30 L100,300 L0,300 Z' fill='%238a2f52'/%3E%3C/svg%3E");
+    animation: kitchen-bob-3 3.8s ease-in-out infinite;
+  }
+  @keyframes kitchen-bob-2{
+    0%, 100%{ transform: translateY(-4px); }
+    50%{ transform: translateY(6px); }
+  }
+  @keyframes kitchen-bob-3{
+    0%, 100%{ transform: translateY(0); }
+    50%{ transform: translateY(-10px); }
+  }
+
+  /* ---------- see-availability button, centered over the photo pair,
+     one accent color per bungalow type ---------- */
+  .see-availability{
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    display: inline-block;
+    border: none;
+    padding: 16px 32px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    clip-path: polygon(2% 8%, 20% 0%, 45% 4%, 70% 0%, 98% 6%, 100% 55%, 96% 100%, 60% 96%, 30% 100%, 4% 92%);
+    box-shadow: 0 10px 16px rgba(0,0,0,0.5);
+    cursor: pointer;
+  }
+  .see-availability-classic{
+    background: #78c8be;
+    color: #fff8ef;
+  }
+  .see-availability-twin{
+    background: #641a30;
+    color: #fff8ef;
+  }
+  .see-availability-kitchen{
+    background: #d98cae;
+    color: #fff8ef;
+  }
+  @media (max-width: 600px){
+    .room-section, .room-section.reverse{
+      flex-direction: column;
+    }
+    .room-photo{ width: 100%; flex: 0 0 auto; order: 2; }
+    .room-photo-ribbon{ order: 1; }
+    .room-photo-ribbon.room-photo-ribbon-mid{ order: 3; }
+    .room-photo-ribbon.room-photo-ribbon-bottom{ order: 5; }
+    .room-info{
+      width: 100%;
+      padding: 0;
+      background: transparent;
+      flex: 0 0 auto;
+      align-items: center;
+      text-align: center;
+      order: 4;
+    }
+    .room-info .icon-row{
+      justify-content: center;
+    }
+    #amenities-section .icon-row{
+      flex-direction: column;
+      align-items: center;
+      gap: 44px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -167,12 +754,224 @@
         <img src="butterfly-imgs/2-removebg-preview.png" alt="">
       </div>
     </div>
-    <div class="brand-new-row">
-      <img class="brand-new-badge" src="flowers/brand-new-removebg-preview.png" alt="Brand New">
-    </div>
   </section>
 
   <div class="paper-ribbon paper-ribbon-1"></div>
+
+  <section id="amenities-section">
+    <p class="amenities-title">All bungalows have</p>
+    <div class="icon-row">
+      <div class="icon-badge">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 24L24.0 5.0"/>
+          <path d="M24.0 12.2L20.6 7.3"/>
+          <path d="M24.0 12.2L27.4 7.3"/>
+          <path d="M24 24L40.5 14.5"/>
+          <path d="M34.2 18.1L36.7 12.7"/>
+          <path d="M34.2 18.1L40.2 18.6"/>
+          <path d="M24 24L40.5 33.5"/>
+          <path d="M34.2 29.9L40.2 29.4"/>
+          <path d="M34.2 29.9L36.7 35.3"/>
+          <path d="M24 24L24.0 43.0"/>
+          <path d="M24.0 35.8L27.4 40.7"/>
+          <path d="M24.0 35.8L20.6 40.7"/>
+          <path d="M24 24L7.5 33.5"/>
+          <path d="M13.8 29.9L11.3 35.3"/>
+          <path d="M13.8 29.9L7.8 29.4"/>
+          <path d="M24 24L7.5 14.5"/>
+          <path d="M13.8 18.1L7.8 18.6"/>
+          <path d="M13.8 18.1L11.3 12.7"/>
+        </svg>
+        <span class="icon-label">Air Conditioning</span>
+      </div>
+      <div class="icon-badge">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="12" y="4" width="24" height="40" rx="3"/>
+          <path d="M12 17h24"/>
+          <path d="M17 8v5"/>
+          <path d="M17 21v6"/>
+        </svg>
+        <span class="icon-label">Fridge</span>
+      </div>
+      <div class="icon-badge">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 14a16 16 0 0 1 32 0"/>
+          <path d="M8 14h32"/>
+          <path d="M12 20v2M20 20v2M28 20v2M36 20v2"/>
+          <path d="M12 26v2M20 26v2M28 26v2M36 26v2"/>
+          <path d="M16 32v2M24 32v2M32 32v2"/>
+        </svg>
+        <span class="icon-label">Warm Showers</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="room-section">
+    <div class="paper-ribbon paper-ribbon-1 room-photo-ribbon"></div>
+    <div class="room-photo">
+      <img src="Ruan-images/double-bed-a4.jpeg" alt="Standard bungalow with one big bed">
+      <div class="room-photo-seam"></div>
+      <img src="Ruan-images/bathroom-rug-mirror.jpeg" alt="Bathroom with rug and mirror">
+      <div class="room-photo-seam room-photo-seam-2"></div>
+      <img class="room-photo-third" src="Ruan-images/big-bed-air-condition.jpeg" alt="Standard bungalow bed with air conditioning">
+      <div class="room-photo-overlay">
+        <h2 class="room-photo-title room-photo-title-classic">Standard</h2>
+        <a class="see-availability see-availability-classic" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">See Availability</a>
+      </div>
+      <div class="room-photo-title-overlay">
+        <h2 class="room-photo-title room-photo-title-classic">Standard</h2>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-thin paper-ribbon-2 room-photo-ribbon room-photo-ribbon-mid"></div>
+    <div class="room-panel-seam room-photo-seam"></div>
+    <div class="room-bottom-row">
+      <div class="room-info">
+        <h2 class="room-panel-title room-photo-title-classic">Standard</h2>
+        <div class="room-panel-divider paper-ribbon paper-ribbon-thin paper-ribbon-1"></div>
+        <div class="room-strip room-strip-classic">
+        <div class="icon-row">
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 38V12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v10"/>
+              <rect x="12" y="18" width="10" height="8" rx="3"/>
+              <rect x="8" y="26" width="36" height="10" rx="3"/>
+              <path d="M8 38v4M44 36v4"/>
+            </svg>
+            <span class="icon-label">&times;1 Bed</span>
+          </div>
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 42V18a6 6 0 0 1 6-6h2"/>
+              <path d="M17 20a10 8 0 0 1 20 0z"/>
+              <path d="M19 23v5M23 24v5M27 24v5M31 24v5M35 23v5" stroke-dasharray="1 2.5"/>
+            </svg>
+            <span class="icon-label">&times;1 Bath</span>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="room-panel-divider paper-ribbon paper-ribbon-thin paper-ribbon-2"></div>
+      <div class="room-button-panel">
+        <a class="see-availability see-availability-classic" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">See Availability</a>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-2 room-photo-ribbon room-photo-ribbon-bottom"></div>
+  </section>
+
+  <section class="room-section reverse">
+    <div class="paper-ribbon paper-ribbon-2 room-photo-ribbon"></div>
+    <div class="room-photo">
+      <img src="Ruan-images/bed-clean-towel-closeup.jpeg" alt="Twin bungalow with two big beds">
+      <div class="room-photo-seam"></div>
+      <img src="Ruan-images/rooma3-made-bed-garden-view.jpeg" alt="Made bed with garden view">
+      <div class="room-photo-seam room-photo-seam-2"></div>
+      <img class="room-photo-third" src="Ruan-images/outside-garden-bungalow.jpeg" alt="Twin bungalow garden exterior">
+      <div class="room-photo-overlay">
+        <h2 class="room-photo-title room-photo-title-twin">Twin</h2>
+        <a class="see-availability see-availability-twin" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">See Availability</a>
+      </div>
+      <div class="room-photo-title-overlay">
+        <h2 class="room-photo-title room-photo-title-twin">Twin</h2>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-thin paper-ribbon-1 room-photo-ribbon room-photo-ribbon-mid"></div>
+    <div class="room-panel-seam room-photo-seam"></div>
+    <div class="room-bottom-row">
+      <div class="room-info">
+        <h2 class="room-panel-title room-photo-title-twin">Twin</h2>
+        <div class="room-panel-divider paper-ribbon paper-ribbon-thin paper-ribbon-2"></div>
+        <div class="room-strip room-strip-twin">
+        <div class="icon-row">
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 38V12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v10"/>
+              <rect x="12" y="18" width="10" height="8" rx="3"/>
+              <rect x="8" y="26" width="36" height="10" rx="3"/>
+              <path d="M8 38v4M44 36v4"/>
+            </svg>
+            <span class="icon-label">&times;2 Beds</span>
+          </div>
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 42V18a6 6 0 0 1 6-6h2"/>
+              <path d="M17 20a10 8 0 0 1 20 0z"/>
+              <path d="M19 23v5M23 24v5M27 24v5M31 24v5M35 23v5" stroke-dasharray="1 2.5"/>
+            </svg>
+            <span class="icon-label">&times;1 Bath</span>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="room-panel-divider paper-ribbon paper-ribbon-thin paper-ribbon-1"></div>
+      <div class="room-button-panel">
+        <a class="see-availability see-availability-twin" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">See Availability</a>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-1 room-photo-ribbon room-photo-ribbon-bottom"></div>
+  </section>
+
+  <section class="room-section">
+    <div class="paper-ribbon paper-ribbon-1 room-photo-ribbon"></div>
+    <div class="room-photo">
+      <img src="Ruan-images/koh-jum-water-scenic.jpeg" alt="Bungalow with one big bed and kitchen">
+      <div class="room-photo-seam"></div>
+      <img src="Ruan-images/flowers-garden-family-friendly.jpeg" alt="Family-friendly garden">
+      <div class="room-photo-seam room-photo-seam-2"></div>
+      <img class="room-photo-third" src="Ruan-images/view-from-room-golden-curtains.jpeg" alt="View from the kitchen bungalow room">
+      <div class="room-photo-overlay">
+        <h2 class="room-photo-title room-photo-title-kitchen">Kitchen</h2>
+        <a class="see-availability see-availability-kitchen" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">See Availability</a>
+      </div>
+      <div class="room-photo-title-overlay">
+        <h2 class="room-photo-title room-photo-title-kitchen">Kitchen</h2>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-thin paper-ribbon-2 room-photo-ribbon room-photo-ribbon-mid"></div>
+    <div class="room-panel-seam room-photo-seam"></div>
+    <div class="room-bottom-row">
+      <div class="room-info">
+        <h2 class="room-panel-title room-photo-title-kitchen">Kitchen</h2>
+        <div class="room-panel-divider paper-ribbon paper-ribbon-thin paper-ribbon-1"></div>
+        <div class="room-strip room-strip-kitchen">
+        <div class="wave-layer wave-layer-2"></div>
+        <div class="wave-layer wave-layer-3"></div>
+        <div class="icon-row">
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 38V12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v10"/>
+              <rect x="12" y="18" width="10" height="8" rx="3"/>
+              <rect x="8" y="26" width="36" height="10" rx="3"/>
+              <path d="M8 38v4M44 36v4"/>
+            </svg>
+            <span class="icon-label">&times;1 Bed</span>
+          </div>
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 42V18a6 6 0 0 1 6-6h2"/>
+              <path d="M17 20a10 8 0 0 1 20 0z"/>
+              <path d="M19 23v5M23 24v5M27 24v5M31 24v5M35 23v5" stroke-dasharray="1 2.5"/>
+            </svg>
+            <span class="icon-label">&times;1 Bath</span>
+          </div>
+          <div class="icon-badge">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="20" width="32" height="16" rx="2"/>
+              <path d="M8 24h32"/>
+              <path d="M4 24h4M40 24h4"/>
+              <path d="M16 20v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+            </svg>
+            <span class="icon-label">Kitchen</span>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="room-panel-divider paper-ribbon paper-ribbon-thin paper-ribbon-2"></div>
+      <div class="room-button-panel">
+        <a class="see-availability see-availability-kitchen" href="https://www.booking.com/hotel/th/grand-bungalow.html?aid=304142" target="_blank" rel="noopener">See Availability</a>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-2 room-photo-ribbon room-photo-ribbon-bottom"></div>
+  </section>
 
   <script>
     function delay(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
