@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activities — Grand Bungalow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+  html,body{
+    margin:0; padding:0;
+    background:#000;
+  }
+  * { box-sizing: border-box; }
+
+  section{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ---------- top hero: reuses the same full-bleed photo + centered
+     sticker-button treatment as the homepage's Activities button ---------- */
+  #activities-hero{
+    min-height: auto;
+    padding: 0;
+    background: #000;
+    display: block;
+    position: relative;
+  }
+  #activities-hero > img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1448 / 1086;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-shadow{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 45%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 100%);
+    pointer-events: none;
+  }
+  .hero-overlay{
+    position: absolute;
+    left: 0; bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 24px;
+  }
+  .hero-title{
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    color: #fff8ef;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    text-shadow: 0 6px 22px rgba(0,0,0,0.95), 0 3px 8px rgba(0,0,0,1);
+  }
+  .hero-subtitle{
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    color: #e8e2d8;
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    text-shadow: 0 3px 10px rgba(0,0,0,0.9);
+  }
+  @media (min-width: 601px){
+    .hero-overlay{ padding: 4%; }
+  }
+
+  /* ---------- stationary butterfly perched on the back of the scooter
+     seat — same idle flap-in-place treatment as the hammock-fence
+     butterfly on the bungalows page, just repositioned/resized here ---------- */
+  .butterfly-wrap{
+    position:absolute;
+    opacity:0;
+  }
+  .butterfly{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .butterfly img{
+    position:absolute; inset:0;
+    width: 100%;
+    height:auto;
+    object-fit: contain;
+    opacity:0;
+    filter:
+      url(#stickerOutlineHero)
+      saturate(0.92) contrast(1.05)
+      drop-shadow(0 6px 5px rgba(0,0,0,0.5));
+  }
+  .butterfly img.frame-active{ opacity:1; }
+  .butterfly-wrap-scooter{
+    width: 62px; height: 71px;
+    margin-left: -31px; margin-top: -35px;
+    left: 50%; top: 64%;
+    opacity: 1;
+  }
+  @media (max-width: 600px){
+    .butterfly-wrap-scooter .butterfly img{
+      filter:
+        url(#stickerOutlineHeroMobile)
+        saturate(0.92) contrast(1.05)
+        drop-shadow(0 6px 5px rgba(0,0,0,0.5));
+    }
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    .butterfly-wrap-scooter{
+      width: 100px; height: 114px;
+      margin-left: -50px; margin-top: -57px;
+    }
+  }
+  @media (min-width: 1025px){
+    .butterfly-wrap-scooter{
+      width: 140px; height: 160px;
+      margin-left: -70px; margin-top: -80px;
+      top: 66%;
+    }
+  }
+
+  /* ---------- ocean wave divider between the hero and the first
+     activity section — same bobbing-wave-band technique as the
+     kitchen room strip on the bungalows page, recolored teal/blue
+     and stretched to a full-width band ---------- */
+  .wave-divider{
+    position: relative;
+    width: 100%;
+    height: 130px;
+    overflow: hidden;
+    background: #04262b;
+  }
+  .wave-divider .wave-layer{
+    position: absolute;
+    left: -10px; right: -10px;
+    height: 300px;
+    background-repeat: repeat-x;
+    background-size: 100px 300px;
+    background-position: top left;
+  }
+  .wave-divider .wave-layer-2{
+    top: 10%;
+    z-index: 2;
+    background-position: 50px top;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Cpath d='M0,30 C12.5,20 37.5,20 50,30 C62.5,40 87.5,40 100,30 L100,300 L0,300 Z' fill='%23134e52'/%3E%3C/svg%3E");
+    animation: wave-divider-bob-2 3.4s ease-in-out infinite;
+  }
+  .wave-divider .wave-layer-3{
+    top: 35%;
+    z-index: 3;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Cpath d='M0,30 C12.5,20 37.5,20 50,30 C62.5,40 87.5,40 100,30 L100,300 L0,300 Z' fill='%233fa9ac'/%3E%3C/svg%3E");
+    animation: wave-divider-bob-3 3.8s ease-in-out infinite;
+  }
+  @keyframes wave-divider-bob-2{
+    0%, 100%{ transform: translateY(-4px); }
+    50%{ transform: translateY(6px); }
+  }
+  @keyframes wave-divider-bob-3{
+    0%, 100%{ transform: translateY(0); }
+    50%{ transform: translateY(-10px); }
+  }
+
+  /* ---------- torn-paper ribbon divider, same technique used across
+     the rest of the site ---------- */
+  .paper-ribbon{
+    position: relative;
+    z-index: 5;
+    height: 34px;
+    margin-top: -17px;
+    margin-bottom: -17px;
+    background: #fff;
+  }
+  .paper-ribbon-1{
+    clip-path: polygon(
+      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+      70% 30%, 80% 32%, 90% 25%, 100% 25%,
+      100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
+      30% 74%, 20% 60%, 10% 67%, 0% 64%
+    );
+  }
+  .paper-ribbon-2{
+    clip-path: polygon(
+      0% 35%, 10% 29%, 20% 35%, 30% 29%, 40% 34%, 50% 38%, 60% 33%,
+      70% 26%, 80% 33%, 90% 36%, 100% 28%,
+      100% 71%, 90% 73%, 80% 68%, 70% 67%, 60% 65%, 50% 60%, 40% 62%,
+      30% 69%, 20% 60%, 10% 61%, 0% 70%
+    );
+  }
+
+  /* ---------- activity sections: photo + text, alternating sides ---------- */
+  .activity-section{
+    display: flex;
+    min-height: auto;
+    background: #000;
+    flex-direction: column;
+    padding: 0 0 80px;
+    gap: 40px;
+  }
+  .activity-info{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    padding: 0 8%;
+    background: #000;
+    text-align: left;
+  }
+  .activity-title{
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    color: #fff8ef;
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  }
+  .activity-text{
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    color: #cfc6ba;
+    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+  .activity-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .activity-tag{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff8ef;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  }
+
+  /* per-activity accent colors, echoing the bungalow-page palette —
+     brighter, more saturated fills with dark text for contrast/pop */
+  .activity-scooter .activity-tag{ background: rgba(232,130,58,0.55); }
+  .activity-beach .activity-tag{ background: rgba(95,194,182,0.55); }
+  .activity-trekking .activity-tag{ background: rgba(124,189,87,0.55); }
+  .activity-boat .activity-tag,
+  #boat-section .activity-tag{ background: rgba(90,155,219,0.55); }
+
+  /* ---------- photo collage: one big photo with a smaller photo
+     pinned over one corner, like a snapshot laid on top ---------- */
+  .collage{
+    position: relative;
+    width: 100%;
+  }
+  .collage-main{
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    border-radius: 3px;
+  }
+  .collage-grid{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: 100%;
+  }
+  .collage-grid img{
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    border-radius: 3px;
+  }
+  .collage-strip-v{
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    background: #fff8ef;
+    z-index: 4;
+    clip-path: polygon(
+      30% 0%, 38% 10%, 38% 20%, 34% 30%, 40% 40%, 31% 50%, 40% 60%,
+      30% 70%, 32% 80%, 25% 90%, 25% 100%,
+      75% 100%, 68% 90%, 67% 80%, 62% 70%, 71% 60%, 63% 50%, 65% 40%,
+      74% 30%, 60% 20%, 61% 10%, 70% 0%
+    );
+  }
+  .collage-strip-h{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 16px;
+    background: #fff8ef;
+    z-index: 5;
+    clip-path: polygon(
+      0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+      70% 30%, 80% 32%, 90% 25%, 100% 25%,
+      100% 100%, 0% 100%
+    );
+  }
+
+  /* thin vertical torn-paper strip separating an activity's photo from
+     its text, tablet/desktop only — same technique as the room-photo-seam
+     on the bungalows page, just borrowed here */
+  .activity-seam{ display: none; }
+
+  @media (min-width: 601px){
+    .activity-section{
+      flex-direction: row;
+      align-items: center;
+      padding: 0 0 80px;
+      gap: 0;
+    }
+    .activity-section.reverse{
+      flex-direction: row-reverse;
+    }
+    .collage, .collage-grid{ flex: 1 1 50%; }
+    .activity-info{ flex: 1 1 50%; }
+    .activity-seam{
+      display: block;
+      flex: 0 0 16px;
+      width: 16px;
+      margin: 0 -8px;
+      align-self: stretch;
+      position: relative;
+      z-index: 3;
+      background: #fff8ef;
+      clip-path: polygon(
+        30% 0%, 38% 10%, 38% 20%, 34% 30%, 40% 40%, 31% 50%, 40% 60%,
+        30% 70%, 32% 80%, 25% 90%, 25% 100%,
+        75% 100%, 68% 90%, 67% 80%, 62% 70%, 71% 60%, 63% 50%, 65% 40%,
+        74% 30%, 60% 20%, 61% 10%, 70% 0%
+      );
+    }
+    .activity-scooter{ padding-bottom: 0; }
+    .activity-beach{ padding-top: 0; padding-bottom: 0; align-items: stretch; }
+    .activity-beach .activity-info{ padding-top: 60px; padding-bottom: 60px; }
+    .activity-beach .collage-grid{
+      align-self: stretch;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0;
+    }
+    .activity-beach .collage-grid img{
+      aspect-ratio: auto;
+      height: 100%;
+      width: 100%;
+    }
+    .activity-beach .collage-strip-v{
+      top: 50%; bottom: auto;
+      left: 0; right: 0;
+      width: auto; height: 16px;
+      transform: translateY(-50%);
+      clip-path: polygon(
+        0% 30%, 10% 38%, 20% 38%, 30% 34%, 40% 40%, 50% 31%, 60% 40%,
+        70% 30%, 80% 32%, 90% 25%, 100% 25%,
+        100% 61%, 90% 68%, 80% 67%, 70% 62%, 60% 71%, 50% 63%, 40% 65%,
+        30% 74%, 20% 60%, 10% 67%, 0% 64%
+      );
+    }
+    .activity-beach .collage-strip-h{
+      display: none;
+    }
+  }
+
+  /* ---------- mountain trekking: a wide triptych of the summit views,
+     title banner underneath rather than a side-by-side split ---------- */
+  #trekking-section{
+    background: #000;
+    flex-direction: column;
+    padding: 90px 0;
+    gap: 40px;
+    align-items: stretch;
+  }
+  .triptych{
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    padding: 0 6px;
+  }
+  .triptych img{
+    flex: 1 1 33.33%;
+    width: 0;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    display: block;
+  }
+  .triptych img:nth-child(2){
+    aspect-ratio: 3 / 4;
+  }
+  #trekking-section .activity-info{
+    align-items: center;
+    text-align: center;
+  }
+  #trekking-section .activity-text{ max-width: 620px; }
+  #trekking-section .activity-tags{ justify-content: center; }
+  @media (min-width: 601px){
+    .triptych{ padding: 0 6%; }
+    .triptych img{ aspect-ratio: 3 / 4; }
+  }
+
+  /* ---------- boat trips: full-bleed banner photo with the title
+     and copy overlaid at the bottom, same shadow-gradient treatment
+     as the site's other full-photo hero sections ---------- */
+  #boat-section{
+    min-height: auto;
+    padding: 0;
+    display: block;
+    position: relative;
+  }
+  #boat-section img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1448 / 1086;
+    object-fit: cover;
+    display: block;
+  }
+  .boat-shadow{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 55%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
+    pointer-events: none;
+  }
+  .boat-overlay{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    padding: 5% 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .boat-overlay .activity-title{ font-size: clamp(1.8rem, 4vw, 2.6rem); }
+  .boat-overlay .activity-text{ color: #e8e2d8; }
+  .boat-strip{ display: none; }
+  .boat-details{ display: none; }
+  @media (max-width: 600px){
+    .boat-shadow{
+      display: none;
+    }
+    .boat-overlay{
+      display: none;
+    }
+    .boat-strip{
+      display: block;
+    }
+    .boat-details{
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 40px 8% 32px;
+      background: #000;
+    }
+  }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="stickerOutlineHero" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="8" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="stickerOutlineHeroMobile" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="4" result="dilated"/>
+      <feFlood flood-color="#ffffff" result="white"/>
+      <feComposite in="white" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </svg>
+
+  <section id="activities-hero">
+    <img src="activities/scooter2.jpg" alt="Scooter on the road near Grand Bungalow">
+    <div class="hero-shadow"></div>
+    <div class="butterfly-wrap butterfly-wrap-scooter" id="butterflyWrapScooter">
+      <div class="butterfly">
+        <img src="butterfly-imgs/1-removebg-preview.png" alt="butterfly resting" class="frame-active">
+        <img src="butterfly-imgs/2-removebg-preview.png" alt="">
+      </div>
+    </div>
+    <div class="hero-overlay">
+      <h1 class="hero-title">Activities</h1>
+      <p class="hero-subtitle">See what Koh Jum has to offer!</p>
+    </div>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-2"></div>
+
+  <div class="wave-divider">
+    <div class="wave-layer wave-layer-2"></div>
+    <div class="wave-layer wave-layer-3"></div>
+  </div>
+
+  <div class="paper-ribbon paper-ribbon-1"></div>
+
+  <section class="activity-section activity-scooter">
+    <div class="collage">
+      <img class="collage-main" src="activities/scooter.png" alt="Scooter ride down a palm-lined road on Koh Jum">
+    </div>
+    <div class="activity-seam"></div>
+    <div class="activity-info">
+      <h2 class="activity-title">Scooter Rental</h2>
+      <p class="activity-text">Hire a scooter right from the bungalow and explore Koh Jum at your own pace — hidden beaches just a ride away.</p>
+      <div class="activity-tags">
+        <span class="activity-tag">Self-Guided</span>
+        <span class="activity-tag">Daily Rentals</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-2"></div>
+
+  <section class="activity-section reverse activity-beach">
+    <div class="collage-grid">
+      <img src="flowers/magic-beach.png" alt="Magic Beach">
+      <img src="activities/magic-beach-sunset.png" alt="Sunset at Magic Beach">
+      <div class="collage-strip-v"></div>
+      <div class="collage-strip-h"></div>
+    </div>
+    <div class="activity-seam"></div>
+    <div class="activity-info">
+      <h2 class="activity-title">Magic Beach</h2>
+      <p class="activity-text">Magic Beach's soft sandy bottom and calm, clear water are perfect for swimming and bathing, with easy snorkeling and kayaking over the reef.</p>
+      <div class="activity-tags">
+        <span class="activity-tag">Swimming</span>
+        <span class="activity-tag">Snorkeling</span>
+        <span class="activity-tag">Kayaking</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-1"></div>
+
+  <section id="trekking-section" class="activity-section activity-trekking">
+    <div class="triptych">
+      <img src="activities/koh-pu-mountain-guided-tour.png" alt="View over the bay from Koh Pu mountain">
+      <img src="activities/koh-pu-mountain-trek-view.png" alt="Islands seen from the Koh Pu trekking trail">
+      <img src="activities/koh-pu-mountain-view.png" alt="Coastline view from the Koh Pu summit">
+    </div>
+    <div class="activity-info">
+      <h2 class="activity-title">Koh Pu Mountain Trekking</h2>
+      <p class="activity-text">Join a guided trek up Koh Pu mountain for sweeping views over the island and the Andaman Sea.</p>
+      <div class="activity-tags">
+        <span class="activity-tag">Trekking</span>
+        <span class="activity-tag">Guided Tours</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="paper-ribbon paper-ribbon-2"></div>
+
+  <section id="boat-section">
+    <img src="activities/longtail-boat-trip.png" alt="Longtail boats moored on a Koh Jum beach">
+    <div class="boat-shadow"></div>
+    <div class="boat-overlay">
+      <h2 class="activity-title">Boat Trips</h2>
+      <p class="activity-text">Hop on a longtail for a day trip out to the surrounding islands — snorkeling stops, hidden lagoons, and beaches only reachable by boat.</p>
+      <div class="activity-tags">
+        <span class="activity-tag">Snorkeling</span>
+        <span class="activity-tag">Island Trips</span>
+        <span class="activity-tag">Day Trips</span>
+      </div>
+    </div>
+    <div class="paper-ribbon paper-ribbon-1 boat-strip"></div>
+    <div class="boat-details">
+      <h2 class="activity-title">Boat Trips</h2>
+      <p class="activity-text">Hop on a longtail for a day trip out to the surrounding islands — snorkeling stops, hidden lagoons, and beaches only reachable by boat.</p>
+      <div class="activity-tags">
+        <span class="activity-tag">Snorkeling</span>
+        <span class="activity-tag">Island Trips</span>
+        <span class="activity-tag">Day Trips</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function delay(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    const scooterWrap = document.getElementById('butterflyWrapScooter');
+    const scooterFrames = scooterWrap.querySelectorAll('img');
+    function setScooterFrame(i){
+      scooterFrames.forEach(f => f.classList.remove('frame-active'));
+      scooterFrames[i].classList.add('frame-active');
+    }
+    async function scooterIdleLoop(){
+      while (true){
+        setScooterFrame(0);
+        await delay(900 + Math.random() * 1200);
+        setScooterFrame(1);
+        await delay(180);
+      }
+    }
+    scooterIdleLoop();
+  </script>
+</body>
+</html>

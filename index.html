@@ -690,6 +690,7 @@
     padding: 0;
     background: #000;
     display: block;
+    position: relative;
   }
   #hammock-section img{
     width: 100%;
@@ -697,6 +698,17 @@
     aspect-ratio: 1448 / 1086;
     object-fit: cover;
     display: block;
+  }
+  .activities-btn{
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 0;
+    z-index: 6;
+    white-space: nowrap;
+    background: #e8823a;
+    color: #fff8ef;
+    border: none;
   }
 
   /* ---------- hammock-photo section: now just a black placeholder,
@@ -836,6 +848,7 @@
 
   <section id="hammock-section">
     <img src="flowers/magic-beach.png" alt="Beach">
+    <a class="book-now activities-btn" href="activities.html">Activities</a>
   </section>
 
   <div class="paper-ribbon paper-ribbon-1"></div>
