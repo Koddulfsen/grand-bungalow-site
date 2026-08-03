@@ -6,13 +6,111 @@
 <title>Grand Bungalow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Playfair+Display:ital,wght@1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Playfair+Display:ital,wght@1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
   html,body{
     margin:0; padding:0;
     background:#000;
   }
   * { box-sizing: border-box; }
+
+  /* ---------- header ---------- */
+  #site-header{
+    position: relative;
+    background:#000;
+    z-index: 10;
+  }
+  .header-bar{
+    position: relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 14px 20px;
+  }
+  .header-logo-link{
+    display:block;
+    line-height:0;
+  }
+  .header-logo{
+    height:48px;
+    width:auto;
+    display:block;
+  }
+  .header-nav{
+    display:none;
+    align-items:center;
+    gap: 32px;
+  }
+  .header-nav a{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color:#fff8ef;
+    text-decoration:none;
+  }
+  .header-nav a:hover{ color:#f06e82; }
+  .burger{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    position:absolute;
+    right:20px; top:50%;
+    transform:translateY(-50%);
+    width:32px; height:32px;
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+    z-index: 2;
+  }
+  .burger span{
+    display:block;
+    width:100%;
+    height:2px;
+    background:#fff8ef;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  #site-header.nav-open .burger span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  #site-header.nav-open .burger span:nth-child(2){ opacity:0; }
+  #site-header.nav-open .burger span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+  .header-nav-mobile{
+    max-height:0;
+    overflow:hidden;
+    background:#000;
+    transition: max-height 0.3s ease;
+  }
+  #site-header.nav-open .header-nav-mobile{
+    max-height:200px;
+  }
+  .header-nav-mobile a{
+    display:block;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color:#fff8ef;
+    text-decoration:none;
+    padding: 16px 28px;
+    border-top: 1px solid rgba(255,248,239,0.12);
+  }
+
+  @media (min-width: 601px){
+    .header-bar{ justify-content:flex-start; padding: 18px 32px; }
+    .header-nav{ display:flex; margin-left:auto; }
+    .burger{ display:none; }
+    .header-nav-mobile{ display:none; }
+  }
+  @media (min-width: 1025px){
+    .header-bar{ padding: 22px 48px; }
+    .header-logo{ height:56px; }
+    .header-nav{ gap: 44px; }
+    .header-nav a{ font-size: 1.05rem; }
+  }
 
   section{
     position:relative;
@@ -129,6 +227,107 @@
     padding: 50px 20px;
     flex-direction: column;
     gap: 28px;
+  }
+  /* pairs each section's decor visual with a title + copy, side by side
+     on tablet/desktop; the decor-visual wrapper gives the rays/glow a
+     positioning anchor that travels with the artwork instead of always
+     centering on the whole section */
+  .transition-inner{
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .decor-visual{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .transition-text{
+    position: relative;
+    z-index: 3;
+    max-width: 380px;
+    text-align: center;
+  }
+  .transition-title{
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin: 0 0 12px;
+  }
+  .transition-copy{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #fff8ef;
+    margin: 0;
+    background: rgba(0,0,0,0.4);
+    padding: 18px 22px;
+    border-radius: 6px;
+  }
+  .title-line-white{ color: #fff8ef; }
+  .title-line-outline{
+    display: inline-block;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 800;
+    text-transform: lowercase;
+    font-size: 1.9em;
+    color: #f06e82;
+    -webkit-text-stroke: 10px #fff8ef;
+    paint-order: stroke fill;
+  }
+  .plant-title-pyramid{
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1;
+  }
+  .plant-line{
+    display: inline-block;
+    color: #fff8ef;
+  }
+  .plant-line-1{ font-size: 0.95em; }
+  .plant-line-2{ font-size: 1.89em; }
+  .plant-line-img{
+    display: block;
+    margin: 6px auto 0;
+    width: 260px;
+    height: auto;
+  }
+  .sun-title{ color: #ffc35c; }
+  .sun-text, #transition-2 .transition-text{ margin-top: 60px; }
+  @media (min-width: 601px){
+    .sun-text, #transition-2 .transition-text{ margin-top: 100px; }
+  }
+  @media (min-width: 1025px){
+    .sun-text, #transition-2 .transition-text{ margin-top: 140px; }
+  }
+  @media (min-width: 601px){
+    .transition-inner{ flex-direction: row; justify-content: center; gap: 56px; text-align: left; }
+    .transition-text{ text-align: left; }
+    #transition-3 .transition-text{ text-align: center; }
+    .transition-title{ margin-bottom: 6px; }
+    .title-line-white{ display: inline-block; margin-left: 44px; }
+    .title-line-outline{ margin-left: 20px; }
+  }
+  @media (min-width: 1025px){
+    .transition-inner{ gap: 80px; }
+    .transition-title{ font-size: 2.1rem; }
+    .transition-copy{ font-size: 1.05rem; }
+    .transition-text{ max-width: 440px; }
   }
   #transition-1, #transition-2, #transition-3{
     background:#000;
@@ -539,6 +738,7 @@
       margin-left: -50px; margin-top: -35px;
     }
     #transition-1, #transition-2, #transition-3{ min-height: 20vh; }
+    #transition-3{ min-height: 42vh; }
     .tagline-hibiscus{ width: 100px; }
     .hibiscus-glow{ width: 300px; height: 300px; }
     .plant-cutout-left{ width: 210px; }
@@ -558,6 +758,7 @@
     }
     .transition{ min-height: 70vh; }
     #transition-1, #transition-2, #transition-3{ min-height: 30vh; }
+    #transition-3{ min-height: 52vh; }
     .tagline-hibiscus{ width: 150px; }
     .hibiscus-glow{ width: 440px; height: 440px; }
     .plant-cutout-left{ width: 280px; }
@@ -593,6 +794,7 @@
     }
     .transition{ min-height: 85vh; }
     #transition-1, #transition-2, #transition-3{ min-height: 35vh; }
+    #transition-3{ min-height: 60vh; }
     .tagline-hibiscus{ width: 180px; }
     .hibiscus-glow{ width: 500px; height: 500px; }
     .plant-cutout-left{ width: 380px; }
@@ -794,6 +996,27 @@
     </filter>
   </svg>
 
+  <header id="site-header">
+    <div class="header-bar">
+      <a class="header-logo-link" href="site.html">
+        <img class="header-logo" src="logo-small.png?v=2" alt="Grand Bungalow home">
+      </a>
+      <nav class="header-nav">
+        <a href="bungalows.html">Bungalows</a>
+        <a href="activities.html">Activities</a>
+      </nav>
+      <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="header-nav-mobile" id="headerNavMobile">
+      <a href="bungalows.html">Bungalows</a>
+      <a href="activities.html">Activities</a>
+    </nav>
+  </header>
+
+  <div class="paper-ribbon paper-ribbon-1 header-ribbon"></div>
+
   <section id="hero">
     <div class="hero-content">
       <div class="logo-wrap">
@@ -816,10 +1039,18 @@
   <div class="paper-ribbon paper-ribbon-1"></div>
 
   <section id="transition-1" class="transition">
-    <div class="hibiscus-rays"></div>
-    <div class="hibiscus-decor">
-      <div class="hibiscus-glow"></div>
-      <img class="tagline-hibiscus" src="flowers/red-hibiscus-removebg-preview.png" alt="red hibiscus">
+    <div class="transition-inner">
+      <div class="decor-visual">
+        <div class="hibiscus-rays"></div>
+        <div class="hibiscus-decor">
+          <div class="hibiscus-glow"></div>
+          <img class="tagline-hibiscus" src="flowers/red-hibiscus-removebg-preview.png" alt="red hibiscus">
+        </div>
+      </div>
+      <div class="transition-text">
+        <h3 class="transition-title hibiscus-title"><span class="title-line-white">Experience</span><br><span class="title-line-outline">Abundance</span></h3>
+        <p class="transition-copy">Grand Bungalow sits just outside Ting Rai Village, tucked down a quiet side street 100 meters off the main road — the same road that leads straight to the beach. Restaurants and shops are a stones throw away, but here it's just lush gardens and quiet. Bungalows and scooter rental are open year-round; our restaurant opens for high season.</p>
+      </div>
     </div>
   </section>
 
@@ -837,10 +1068,22 @@
   <div class="paper-ribbon paper-ribbon-1"></div>
 
   <section id="transition-2" class="transition">
-    <div class="plant-rays"></div>
-    <div class="plant-decor">
-      <div class="plant-glow"></div>
-      <img class="nature-plant" src="flowers/green-plant1-removebg-preview.png" alt="green plant">
+    <div class="transition-inner">
+      <div class="transition-text">
+        <h3 class="transition-title plant-title-pyramid">
+          <span class="plant-line plant-line-1">Connect</span><br>
+          <span class="plant-line plant-line-2">With</span><br>
+          <img class="plant-line-img" src="NATURE.png" alt="Nature">
+        </h3>
+        <p class="transition-copy">Grab a scooter and go find your own stretch of sand along the coast, or book a boat out for a day of snorkeling. Head inland and the jungle trails take over, leading up to a hike with a view worth the sweat. Two minutes from your door, Magic Beach is the one everyone ends up loving most: secluded, warm water, made for swimming.</p>
+      </div>
+      <div class="decor-visual">
+        <div class="plant-rays"></div>
+        <div class="plant-decor">
+          <div class="plant-glow"></div>
+          <img class="nature-plant" src="flowers/green-plant1-removebg-preview.png" alt="green plant">
+        </div>
+      </div>
     </div>
   </section>
 
@@ -854,6 +1097,10 @@
   <div class="paper-ribbon paper-ribbon-1"></div>
 
   <section id="transition-3" class="transition">
+    <div class="transition-text sun-text">
+      <h3 class="transition-title sun-title">Rest Up</h3>
+      <p class="transition-copy">Long day out on the island? Come back to a clean, comfortable bed, open the windows, and watch the sun go down over the garden. Quiet nights and good sleep.</p>
+    </div>
     <div class="sun-rays"></div>
     <div class="sun-decor">
       <div class="sun-glow"></div>
@@ -874,6 +1121,13 @@
   </section>
 
   <script>
+    const siteHeader = document.getElementById('site-header');
+    const burgerBtn = document.getElementById('burgerBtn');
+    burgerBtn.addEventListener('click', () => {
+      const open = siteHeader.classList.toggle('nav-open');
+      burgerBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
     const wrap = document.getElementById('butterflyWrap');
     const frames = wrap.querySelectorAll('.butterfly img');
 
