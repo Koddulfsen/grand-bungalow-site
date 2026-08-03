@@ -892,21 +892,47 @@
     #gallery-section{ height: 128vh; }
   }
 
-  /* ---------- hammock section: single full-bleed photo, same
-     paper-ribbon-bordered treatment as the gallery grid ---------- */
+  /* ---------- hammock section: two activity photos side by side,
+     split by a thin paper-strip seam like the gallery grid's dividers ---------- */
   #hammock-section{
     min-height: auto;
     padding: 0;
     background: #000;
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    height: 55vh;
     position: relative;
   }
   #hammock-section img{
     width: 100%;
-    height: auto;
-    aspect-ratio: 1448 / 1086;
+    height: 100%;
+    min-width: 0;
     object-fit: cover;
     display: block;
+  }
+  .hammock-seam{
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 18px;
+    margin-left: -9px;
+    z-index: 4;
+    background: #fff;
+    clip-path: polygon(
+      30% 0%, 38% 10%, 38% 20%, 34% 30%, 40% 40%, 31% 50%, 40% 60%,
+      30% 70%, 32% 80%, 25% 90%, 25% 100%,
+      75% 100%, 68% 90%, 67% 80%, 62% 70%, 71% 60%, 63% 50%, 65% 40%,
+      74% 30%, 60% 20%, 67% 10%, 64% 0%
+    );
+  }
+  @media (max-width: 600px){
+    #hammock-section{ height: 32vh; }
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    #hammock-section{ height: 65vh; }
+  }
+  @media (min-width: 1025px){
+    #hammock-section{ height: 80vh; }
   }
   .activities-btn{
     position: absolute;
@@ -1097,7 +1123,9 @@
   <div class="paper-ribbon paper-ribbon-2"></div>
 
   <section id="hammock-section">
-    <img src="flowers/magic-beach.png" alt="Beach">
+    <img src="activities/longtail-boat-trip.png" alt="Longtail boat trip">
+    <img src="activities/koh-pu-mountain-view.png" alt="Koh Pu mountain hike view">
+    <div class="hammock-seam"></div>
     <a class="book-now activities-btn" href="activities.html">Activities</a>
   </section>
 
